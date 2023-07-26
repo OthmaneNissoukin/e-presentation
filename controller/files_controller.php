@@ -24,7 +24,7 @@
 
             $repository_link = $_POST["repository_link"];
 
-            FileModel::insert_application($_SESSION["team_code"], $repository_link);
+            FileModel::insertPath($_SESSION["team_code"], $repository_link, "application");
             echo json_encode(["status" => "success", "message" => "Saved Successfully."]);
             exit;
         }
@@ -63,7 +63,7 @@
 
             // Inserting New File
             if (move_uploaded_file($report_file["tmp_name"], $ending_path) ) {
-                FileModel::insert_report($team_code, $ending_path);
+                FileModel::insertPath($team_code, $ending_path, "report");
                 echo json_encode(["status" => "success", "message" => "Report has been successfully saved!"]);
                 exit;
             } else {
@@ -106,7 +106,7 @@
 
             // Inserting New File
             if (move_uploaded_file($presentation_file["tmp_name"], $ending_path) ) {
-                FileModel::insert_presentation($team_code, $ending_path);
+                FileModel::insertPath($team_code, $ending_path, "presentation");
                 echo json_encode(["status" => "success", "message" => "Presentation has been successfully saved!"]);
                 exit;
             } else {

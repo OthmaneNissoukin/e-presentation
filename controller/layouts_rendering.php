@@ -20,6 +20,10 @@
             $team_date = PresentationModel::retrieve_teams_data($team_code);
             $notification_data = NotificationModel::latest_presentation_update($team_code);
 
+            $app_info = FileModel::retrieve_path($team_code, "application");
+            $report_info = FileModel::retrieve_path($team_code, "report");
+            $presentation_info = FileModel::retrieve_path($team_code, "presentation");
+
             // FIXME: Add the message to be shown as pop up modal notification
 
             if ($notification_data) $msg_content = $notification_data["msg_content"];
@@ -91,6 +95,10 @@
 
             $team_info = PresentationModel::retrieve_teams_data($team_code);
 
+            $app_info = FileModel::retrieve_path($team_code, "application");
+            $report_info = FileModel::retrieve_path($team_code, "report");
+            $presentation_info = FileModel::retrieve_path($team_code, "presentation");
+
             require "view/mentor/team_info.php";
         }
         
@@ -152,7 +160,9 @@
 
             $team_code = $_SESSION["team_code"];
 
-            $files_info = FileModel::retrieve_files_info($team_code);
+            $app_info = FileModel::retrieve_path($team_code, "application");
+            $report_info = FileModel::retrieve_path($team_code, "report");
+            $presentation_info = FileModel::retrieve_path($team_code, "presentation");
 
             require "view/teams/upload.php";
         }

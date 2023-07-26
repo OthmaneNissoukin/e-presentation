@@ -39,15 +39,39 @@
     <table class="table table-bordered border-secondary table-hover border-striped">
     <tr>
         <td class="fw-bold">Application</td>
-        <td>Not Available</td>
+            <?php if (empty($app_info)): ?>
+                <td class="fw-bold text-danger">NOT AVAILABLE</td>
+            <?php else: ?> 
+                <td class="fw-bold">
+                    <a class="text-success text-decoration-none" href="<?= $app_info['file_path'] ?>"  target="_blank">
+                        AVAILABLE <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                </td>
+            <?php endif;?> 
     </tr>
     <tr>
         <td class="fw-bold">Report</td>
-        <td>Not Available</td>
+            <?php if (empty($report_info)): ?>
+                <td class="fw-bold text-danger">NOT AVAILABLE</td>
+            <?php else: ?> 
+                <td class="fw-bold">
+                    <a class="text-success text-decoration-none" href="<?= $report_info['file_path'] ?>">
+                        <i class="bi bi-cloud-arrow-down-fill"></i> AVAILABLE
+                    </a>
+                </td>
+            <?php endif;?> 
     </tr>
     <tr>
         <td class="fw-bold">Presentation</td>
-        <td>Not Available</td>
+            <?php if (empty($presentation_info)): ?>
+                <td class="fw-bold text-danger">NOT AVAILABLE</td>
+            <?php else: ?> 
+                <td class="fw-bold">
+                    <a class="text-success text-decoration-none" href="<?= $presentation_info['file_path'] ?>">
+                        <i class="bi bi-cloud-arrow-down-fill"></i> AVAILABLE
+                    </a>
+                </td>
+            <?php endif;?> 
     </tr>
     </table>
 

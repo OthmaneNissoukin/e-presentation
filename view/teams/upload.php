@@ -13,7 +13,7 @@
 
         <div class="mb-3">
             <h6>Application
-                <?php if (is_null($files_info["application_path"])): ?>
+                <?php if (empty($app_info)): ?>
                     <span class="badge text-bg-danger">NOT AVAILABLE</span>
                 <?php else: ?> 
                     <span class="badge text-bg-success">SAVED</span>
@@ -45,7 +45,7 @@
         <div class="mb-3">
             <label for="report" class="form-label">
                 Report
-                <?php if (is_null($files_info["report_path"])): ?>
+                <?php if (empty($report_info)): ?>
                     <span class="badge text-bg-danger">NOT AVAILABLE</span>
                 <?php else: ?> 
                     <span class="badge text-bg-success">UPLOADED</span>
@@ -67,7 +67,7 @@
         <div class="mb-3">
             <label for="presentation" class="form-label">
                 Presentation
-                <?php if (is_null($files_info["presentation_path"])): ?>
+                <?php if (empty($presentation_info)): ?>
                     <span class="badge text-bg-danger">NOT AVAILABLE</span>
                 <?php else: ?> 
                     <span class="badge text-bg-success">UPLOADED</span>

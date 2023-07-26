@@ -9,65 +9,37 @@
             $query = $connection->prepare("INSERT INTO files(team_code) VALUES(:team_code)");
             $query->execute([":team_code" => $team_code]);
         }
+        
 
-        static function retrieve_files_info($team_code) {
+        static function retrieve_path($team_code, $file_type) {
 
             $connection = PresentationModel::connection();
 
-            $query = $connection->prepare("SELECT * FROM files WHERE team_code = :team_code");
-            $query->execute([":team_code" => $team_code]);
+            $query = $connection->prepare("SELECT * FROM files WHERE team_code = :team_code AND file_type = :file_type");
+            $query->execute([":team_code" => $team_code, ":file_type" => $file_type]);
 
             return $query->fetch(PDO::FETCH_ASSOC);
         }
 
 
-        static function insert_application($team_code, $application_path) {
-
+        static function insertPath($team_code, $path, $type) {
             $connection = PresentationModel::connection();
 
-            $query = $connection->prepare("
-                UPDATE files
-                SET application_path = :application_path
-                WHERE team_code = :team_code
+            $delete = $connection->prepare("DELETE FROM files WHERE team_code = :team_code AND file_type = :file_type");
+            $delete->execute([":team_code" => $team_code, ":file_type" => $type]);
+
+            $insert = $connection->prepare("
+                INSERT INTO files(team_code, file_path, file_type)
+                VALUES(:team_code, :file_path, :file_type)
             ");
 
-            $query->execute([
+            $insert->execute([
                 ":team_code" => $team_code,
-                ":application_path" => $application_path
+                ":file_path" => $path,
+                ":file_type" => $type
             ]);
         }
-
-        static function insert_report($team_code, $report_path) {
-
-            $connection = PresentationModel::connection();
-
-            $query = $connection->prepare("
-                UPDATE files
-                SET report_path = :report_path
-                WHERE team_code = :team_code
-            ");
-
-            $query->execute([
-                ":team_code" => $team_code,
-                ":report_path" => $report_path
-            ]);
-        }
-
-        static function insert_presentation($team_code, $presentation_path) {
-
-            $connection = PresentationModel::connection();
-
-            $query = $connection->prepare("
-                UPDATE files
-                SET presentation_path = :presentation_path
-                WHERE team_code = :team_code
-            ");
-
-            $query->execute([
-                ":team_code" => $team_code,
-                ":presentation_path" => $presentation_path
-            ]);
-        }
+        
 
     }
 
