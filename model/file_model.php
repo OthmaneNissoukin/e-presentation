@@ -22,24 +22,24 @@
         }
 
 
-        static function insertPath($team_code, $path, $type) {
+        static function insertPath($team_code, $path, $type, $uploader) {
             $connection = PresentationModel::connection();
 
             $delete = $connection->prepare("DELETE FROM files WHERE team_code = :team_code AND file_type = :file_type");
             $delete->execute([":team_code" => $team_code, ":file_type" => $type]);
 
             $insert = $connection->prepare("
-                INSERT INTO files(team_code, file_path, file_type)
-                VALUES(:team_code, :file_path, :file_type)
+                INSERT INTO files(team_code, file_path, file_type, uploader)
+                VALUES(:team_code, :file_path, :file_type, :uploader)
             ");
 
             $insert->execute([
                 ":team_code" => $team_code,
                 ":file_path" => $path,
-                ":file_type" => $type
+                ":file_type" => $type,
+                ":uploader" => $uploader
             ]);
         }
-        
 
     }
 

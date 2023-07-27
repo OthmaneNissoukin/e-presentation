@@ -56,7 +56,7 @@
 
 <script src="scripts/register.js" type="module"></script>
 <script src="scripts/utils.js" type="module"></script>
-<script src="scripts/ajax_register/ajax.code.js" type="module"></script>
+<script src="scripts/ajax_register/ajax_code.js" type="module"></script>
 
 <?php
     $content = ob_get_contents();

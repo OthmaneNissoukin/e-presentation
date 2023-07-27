@@ -8,27 +8,35 @@
 <table class="table table-bordered border-secondary table-hover border-striped">
     <tr>
         <td class="fw-bold w-25">Team Code</td>
-        <td><?= $team_date["team_code"] ?></td>
+        <td>
+            <?= $team_data["team_code"] ?>
+        </td>
     </tr>
     <tr>
         <td class="fw-bold">Member 1</td>
-        <td><?= $team_date["trainee_1"] ?></td>
+        <td>
+            <?= isset($team_members[0]) ? $team_members[0]["fullname"] : "------" ?>
+        </td>
     </tr>
     <tr>
         <td class="fw-bold">Member 2</td>
-        <td><?= empty($team_date["trainee_2"]) ? "----" : $team_date["trainee_2"]?></td>
+        <td>
+            <?= isset($team_members[1]) ? $team_members[1]["fullname"] : "------" ?>
+        </td>
     </tr>
     <tr>
         <td class="fw-bold">Member 3</td>
-        <td><?= empty($team_date["trainee_3"]) ? "----" : $team_date["trainee_3"]?></td>
+        <td>
+            <?= isset($team_members[2]) ? $team_members[2]["fullname"] : "------" ?>
+        </td>
     </tr>
     <tr>
         <td class="fw-bold">Presentation Date</td>
-        <td class="text-danger fw-bold"><?= $team_date["presentation_date"] == "0000-00-00"? "Unknown": implode("-", array_reverse(explode("-", $team_date["presentation_date"])))?></td>
+        <td class="text-danger fw-bold"><?= $team_data["presentation_date"] == "0000-00-00"? "Unknown": implode("-", array_reverse(explode("-", $team_data["presentation_date"])))?></td>
     </tr>
     <tr>
         <td class="fw-bold">Presentation Time</td>
-        <td class="text-danger fw-bold"><?= $team_date["presentation_time"] == "00:00:00"? "Unknown": substr($team_date["presentation_time"], 0, 5)?></td>
+        <td class="text-danger fw-bold"><?= $team_data["presentation_time"] == "00:00:00"? "Unknown": substr($team_data["presentation_time"], 0, 5)?></td>
     </tr>
 </table>
 

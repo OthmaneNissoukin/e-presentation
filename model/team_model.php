@@ -24,18 +24,14 @@
             return $query->fetch(PDO::FETCH_ASSOC);
         }
 
-        static function save_team($gruop, $trainee_1, $trainee_2, $trainee_3, $presentation_date, $presentation_time) {
-
+        static function save_team($team_code, $group, $presentation_date, $presentation_time) {
             $connection = self::connection();
-            $request = $connection->prepare("INSERT INTO team VALUES(FLOOR(RAND() * 10000), :pwd, :group_code, :trainee_1, :trainee_2,
-                :trainee_3, :presentation_date, :presentation_time, :stat)");
+
+            $request = $connection->prepare("INSERT INTO team VALUES(:team_code, :group_code, :presentation_date, :presentation_time, :stat)");
 
             $request->execute([
-                ":pwd" => "azerty123456",
-                ":group_code" => $gruop,
-                ":trainee_1" => $trainee_1,
-                ":trainee_2" => $trainee_2,
-                ":trainee_3" => $trainee_3,
+                ":team_code" => $team_code,
+                ":group_code" => $group,
                 ":presentation_date" => $presentation_date,
                 ":presentation_time" => $presentation_time,
                 ":stat" => "Inactivated"
@@ -46,7 +42,7 @@
             // Used for filling update layout
             // Used for teams authentication
             $connection = self::connection();
-            $query = $connection->prepare("SELECT * FROM team WHERE team_code = :team_code");
+            $query = $connection->prepare("SELECT * FROM team  WHERE team_code = :team_code");
             $query->execute([":team_code" => $team_code]);
             return $query->fetch(PDO::FETCH_ASSOC);
         }
@@ -63,20 +59,17 @@
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        static function save_team_changes($team_code, $group, $trainee_1, $trainee_2, $trainee_3, $presentation_date, $presentation_time) {
+        static function save_team_changes($team_code, $group, $presentation_date, $presentation_time) {
 
             $connection = self::connection();
-            $request = $connection->prepare("UPDATE team SET group_code = :group_code, trainee_1 = :trainee_1, trainee_2 = :trainee_2,
-                trainee_3 = :trainee_3, presentation_date = :presentation_date, presentation_time = :presentation_time 
+            $request = $connection->prepare("
+                UPDATE team SET group_code = :group_code, presentation_date = :presentation_date, presentation_time = :presentation_time 
                 WHERE team_code = :team_code
                 ");
 
             $request->execute([
                 ":team_code" => $team_code,
                 ":group_code" => $group,
-                ":trainee_1" => $trainee_1,
-                ":trainee_2" => $trainee_2,
-                ":trainee_3" => $trainee_3,
                 ":presentation_date" => $presentation_date,
                 ":presentation_time" => $presentation_time
             ]);
@@ -131,7 +124,30 @@
             $request->execute([":team_code" => $team_code]);
         }
 
+        static function update_team_status($team_code) {
+            $connection = self::connection();
+
+            $request = $connection->prepare("
+                UPDATE team SET status = 'Ready'
+                WHERE team_code = :team_code");
+
+            $request->execute([":team_code" => $team_code]);
+        }
+
+        static function fetch_teams_full_info() {
+            $connection = self::connection();
+
+            $request = $connection->prepare("
+                SELECT team.team_code, GROUP_CONCAT(trainee.fullname) AS members, team.group_code, team.status 
+                FROM team 
+                INNER JOIN trainee 
+                ON team.team_code = trainee.team_code 
+                GROUP BY team.team_code;");
+
+            $request->execute();
+            return $request->fetchAll(PDO::FETCH_ASSOC);
+        }
+
     }
-    
 
 ?>

@@ -13,6 +13,7 @@
 
             return ["team_code" => $team_code, "group_code" => $group_code];
         }
+
         
         static function upload_application() {
             // Uploading Application
@@ -22,10 +23,13 @@
 
             if (Helpers::is_missing("repository_link", "ajax")) die(json_encode(["status" => "error", "message" => "Forbidden."]));
 
+
+            $uploader_fullname = TraineeModel::get_trainee($_SESSION["user"])["fullname"];
             $repository_link = $_POST["repository_link"];
 
-            FileModel::insertPath($_SESSION["team_code"], $repository_link, "application");
+            FileModel::insertPath($_SESSION["team_code"], $repository_link, "application", $uploader_fullname);
             echo json_encode(["status" => "success", "message" => "Saved Successfully."]);
+            TeamController::change_team_status();
             exit;
         }
 
@@ -63,8 +67,15 @@
 
             // Inserting New File
             if (move_uploaded_file($report_file["tmp_name"], $ending_path) ) {
-                FileModel::insertPath($team_code, $ending_path, "report");
+                if (!isset($_SESSION)) {
+                    session_start();
+                }
+
+                $uploader_fullname = TraineeModel::get_trainee($_SESSION["user"])["fullname"];
+
+                FileModel::insertPath($team_code, $ending_path, "report", $uploader_fullname);
                 echo json_encode(["status" => "success", "message" => "Report has been successfully saved!"]);
+                TeamController::change_team_status();
                 exit;
             } else {
                 echo json_encode(["failed" => "success", "message" => "Report couldn't be saved! Please try again."]);
@@ -106,11 +117,16 @@
 
             // Inserting New File
             if (move_uploaded_file($presentation_file["tmp_name"], $ending_path) ) {
-                FileModel::insertPath($team_code, $ending_path, "presentation");
+                if (!isset($_SESSION)) {
+                    session_start();
+                }
+                $uploader_fullname = TraineeModel::get_trainee($_SESSION["user"])["fullname"];
+                FileModel::insertPath($team_code, $ending_path, "presentation", $uploader_fullname);
                 echo json_encode(["status" => "success", "message" => "Presentation has been successfully saved!"]);
                 exit;
             } else {
                 echo json_encode(["failed" => "success", "message" => "Presentation couldn't be saved! Please try again."]);
+                TeamController::change_team_status();
                 die("File couldnt be saved! please try again.");
             }
 

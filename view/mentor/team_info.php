@@ -17,15 +17,15 @@
     </tr>
     <tr>
         <td class="fw-bold">Trainee 1</td>
-        <td><?= $team_info["trainee_1"] ?></td>
+        <td><?= isset($team_members[0]) ? $team_members[0]["fullname"] : "------" ?></td>
     </tr>
     <tr>
         <td class="fw-bold">Trainee 2</td>
-        <td><?= empty($team_info["trainee_2"]) ? "----" : $team_info["trainee_2"]?></td>
+        <td><?= isset($team_members[1]) ? $team_members[1]["fullname"] : "------" ?></td>
     </tr>
     <tr>
         <td class="fw-bold">Trainee 3</td>
-        <td><?= empty($team_info["trainee_3"]) ? "----" : $team_info["trainee_3"]?></td>
+        <td><?= isset($team_members[2]) ? $team_members[2]["fullname"] : "------" ?></td>
     </tr>
     <tr>
         <td class="fw-bold">Date Presentation</td>
@@ -90,7 +90,6 @@
     <button class="btn btn-primary me-3 mb-3">Start Presentation</button>
     <a href="index.php?action=update&team_code=<?= $team_info["team_code"] ?>" class="btn btn-info me-3 mb-3">Update Team</a>
     <a href="index.php?action=contact&team_code=<?= $team_info["team_code"] ?>"" class="btn btn-success me-3 mb-3">Send Message</a>
-    <a href="register.html" class="btn btn-warning me-3 mb-3">Reset Password</a>
     <a href="register.html" class="btn btn-danger me-3 mb-3">Delete Team</a>
 
 

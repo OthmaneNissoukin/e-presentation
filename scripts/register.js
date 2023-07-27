@@ -1,5 +1,24 @@
 import { FormValidation } from "./utils.js";
-let { ajax_operation } = await import(`./ajax_${document.title.toLowerCase()}/ajax_code.js`);
+
+async function ajax_module(
+    trainee_1_name,
+    trainee_2_name,
+    trainee_3_name,
+    group_code,
+    presentation_date_value,
+    presentation_time_value
+) {
+    let get_ajax_function = await import(`./ajax_${document.title.toLowerCase()}/ajax_code.js`);
+
+    get_ajax_function.ajax_operation(
+        trainee_1_name,
+        trainee_2_name,
+        trainee_3_name,
+        group_code,
+        presentation_date_value,
+        presentation_time_value
+    );
+}
 
 const form = document.querySelector("form"),
     trainee_1 = document.getElementById("trainee_1"),
@@ -29,6 +48,8 @@ group.addEventListener("blur", function () {
 });
 
 form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
     let trainee_1_name = trainee_1.value.trim(),
         trainee_2_name = trainee_2.value.trim(),
         trainee_3_name = trainee_3.value.trim(),
@@ -41,7 +62,7 @@ form.addEventListener("submit", function (e) {
 
     if (!(trainee_1_name && group_code)) {
         alert_box.classList.remove("d-none");
-        alert_box.textContent = "Trainee 1 and group code fields are required!";
+        alert_box.textContent = "Trainee 1 and group code are required!";
     } else {
         alert_box.classList.add("d-none");
         alert_box.textContent = "";
@@ -59,8 +80,15 @@ form.addEventListener("submit", function (e) {
         if (FormValidation.invalid_fullname(trainee_3_name) >= 1) errors = true;
     }
 
-    // Ajax
-    ajax_operation();
+    // TODO: SEND DATE AND TIME WITH AJAX
 
-    if (errors) e.preventDefault();
+    // Ajax
+    ajax_module(
+        trainee_1_name,
+        trainee_2_name,
+        trainee_3_name,
+        group_code,
+        presentation_date_value,
+        presentation_time_value
+    );
 });

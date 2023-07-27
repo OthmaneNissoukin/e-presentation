@@ -2,6 +2,7 @@
     require "helpers/helper.php";
     require "helpers/files_helpers.php";
     require "model/team_model.php";
+    require "model/trainee_model.php";
     require "model/file_model.php";
     require "model/notification_model.php";
     require "controller/layouts_rendering.php";

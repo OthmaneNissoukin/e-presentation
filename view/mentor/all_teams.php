@@ -13,8 +13,8 @@
             <th>Team Code</th>
             <th>Group</th>
             <th>Trainee 1</th>
-            <th>Trainee 1</th>
-            <th>Trainee 1</th>
+            <th>Trainee 2</th>
+            <th>Trainee 3</th>
             <th>Status</th>
             <th>Action</th>
         </thead>
@@ -23,15 +23,16 @@
             $counter = 0;
             foreach($teams_data as $team):
                 ++$counter;
+                $members = explode(",", $team["members"]);
         ?>
 
             <tr>
                 <td><?= $counter ?></td>
                 <td><?= $team["team_code"] ?></td>
                 <td><?= $team["group_code"] ?></td>
-                <td><?= $team["trainee_1"] ?></td>
-                <td><?= $team["trainee_2"] ?></td>
-                <td><?= $team["trainee_3"] ?></td>
+                <td><?= isset($members[0]) ? $members[0] : "------" ?></td>
+                <td><?= isset($members[1]) ? $members[1] : "------" ?></td>
+                <td><?= isset($members[2]) ? $members[2] : "------" ?></td>
                 <td><?= $team["status"] ?></td>
 
                 <td>

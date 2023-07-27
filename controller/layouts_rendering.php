@@ -17,7 +17,9 @@
 
             $team_code = $_SESSION["team_code"];
 
-            $team_date = PresentationModel::retrieve_teams_data($team_code);
+            $team_data = PresentationModel::retrieve_teams_data($team_code);
+            $team_members = TraineeModel::get_team_members($team_code);
+
             $notification_data = NotificationModel::latest_presentation_update($team_code);
 
             $app_info = FileModel::retrieve_path($team_code, "application");
@@ -72,7 +74,13 @@
             if (Helpers::is_missing("team_code"));
 
             $team_code = $_REQUEST["team_code"];
+            $_SESSION["team_to_update"] = $team_code;
             $data = PresentationModel::retrieve_teams_data($team_code);
+            $team_members = TraineeModel::get_team_members($team_code);
+
+            $_SESSION["trainee_1"] = isset($team_members[0]) ? $team_members[0]["fullname"] : null;
+            $_SESSION["trainee_2"] = isset($team_members[1]) ? $team_members[1]["fullname"] : null;
+            $_SESSION["trainee_3"] = isset($team_members[2]) ? $team_members[2]["fullname"] : null;
 
             require "view/mentor/update_team.php";
         }
@@ -94,6 +102,7 @@
             $team_code = $_GET["team_code"];
 
             $team_info = PresentationModel::retrieve_teams_data($team_code);
+            $team_members = TraineeModel::get_team_members($team_code);
 
             $app_info = FileModel::retrieve_path($team_code, "application");
             $report_info = FileModel::retrieve_path($team_code, "report");
@@ -114,8 +123,14 @@
         static function all_teams() {
             session_start();
 
+            
             Helpers::redirect_if_not_authenticated("admin", "login_admin");
-            $teams_data = PresentationModel::retrieve_all_teams();
+            $teams_data = PresentationModel::fetch_teams_full_info();
+            
+            if (isset($teams_data[0])) {
+                $teams_data = is_null($teams_data[0]["team_code"]) ? [] : $teams_data;
+            }
+            
 
             require "view/mentor/all_teams.php";
         }

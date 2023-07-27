@@ -30,11 +30,12 @@
         }
 
         static function create_team() {
-            $validation_errors = [];
 
-            if ($_SERVER["REQUEST_METHOD"] != "POST") die("Forbidden");
+            // TODO: This page is only for authentified users.
 
-            if (Helpers::is_missing("trainee_1", "trainee_2", "trainee_3", "group", "presentation_date", "presentation_time")) die("Something is missing");
+            if ($_SERVER["REQUEST_METHOD"] != "POST") die(json_encode(["status" => "error", "msg" => "Forbidden"]));
+
+            if (Helpers::is_missing("trainee_1", "trainee_2", "trainee_3", "group", "presentation_date", "presentation_time")) die(json_encode(["status" => "error", "msg" => "Forbidden"]));
 
             $trainee_1 = ucwords(trim($_POST["trainee_1"]));
             $trainee_2 = ucwords(trim($_POST["trainee_2"]));
@@ -44,53 +45,63 @@
             $presentation_time = $_POST["presentation_time"];
 
             // Date and Time are not checked here as the mentor may create the team before specify in the date and time
-            if (Helpers::is_empty($trainee_1, $group)) die("Trainee 1 and group fields are required!");
+            if (Helpers::is_empty($trainee_1, $group)) die(json_encode(["status" => "invalid", "msg" => "Invalid! Trainee 1 and group are required."]));
 
             if (Helpers::invalid_fullname($trainee_1) == 1) {
-                $validation_errors["trainee_1_err"] = "Invalid characters!";
+                die(json_encode(["status" => "invalid", "msg" => "Invalid characters!"]));
             } elseif (Helpers::invalid_fullname($trainee_1) == 2) {
-                $validation_errors["trainee_1_err"] = "Invalid! Fullname must contains at least 6 characters";
+                die(json_encode(["status" => "invalid", "msg" => "Invalid! Fullname code must contains at least 6 characters."]));
             }
 
             if (Helpers::invalid_group($group) == 1) {
-                $validation_errors["group_err"] = "Invalid characters!";
+                die(json_encode(["status" => "invalid", "msg" => "Invalid characters!"]));
             } elseif (Helpers::invalid_group($group) == 2) {
-                $validation_errors["group_err"] = "Invalid! Group code must contains at least 6 characters";
+                die(json_encode(["status" => "invalid", "msg" => "Invalid! Group code must contains at least 5 characters."]));
             }
 
             // Validation When Inserting Multiple Trainees
             if (!empty($trainee_2)):
                 if (Helpers::invalid_fullname($trainee_2) == 1) {
-                    $validation_errors["trainee_2_err"] = "Invalid characters!";
+                    die(json_encode(["status" => "invalid", "msg" => "Invalid characters!"]));
                 } elseif (Helpers::invalid_fullname($trainee_2) == 2) {
-                    $validation_errors["trainee_2_err"] = "Invalid! Fullname must contains at least 6 characters";
+                    die(json_encode(["status" => "invalid", "msg" => "Invalid! Fullname must contains at least 6 characters."]));
                 }
             endif;
             
             if (!empty($trainee_3)):
                 if (Helpers::invalid_fullname($trainee_3) == 1) {
-                    $validation_errors["trainee_3_err"] = "Invalid characters!";
+                    die(json_encode(["status" => "invalid", "msg" => "Invalid characters!"]));
                 } elseif (Helpers::invalid_fullname($trainee_3) == 2) {
-                    $validation_errors["trainee_3_err"] = "Invalid! Fullname must contains at least 6 characters";
+                    die(json_encode(["status" => "invalid", "msg" => "Invalid! Fullname must contains at least 6 characters."]));
                 }
             endif;
 
-            // Sending notification to the team when date or time is inserted or updated
-
-
-            if ($validation_errors) {
-                die(json_encode($validation_errors));
-            }
-
-            // echo "Good";
+            // TODO: Send notification to the team when date or time is inserted or updated
 
             // Affecting NULL to empty fields
-            $trainee_2 = empty($trainee_2)? NULL : $trainee_2;
+            $trainee_2 = empty($trainee_2)? NULL : $trainee_2; // Instead of null, we will delete this trainee
             $trainee_3 = empty($trainee_3)? NULL : $trainee_3;
             $presentation_date = empty($presentation_date)? NULL : $presentation_date;
             $presentation_time = empty($presentation_time)? NULL : $presentation_time;
 
-            PresentationModel::save_team($group, $trainee_1, $trainee_2, $trainee_3, $presentation_date, $presentation_time);
+            // Generate 4 Digits number as a team identifier
+            $team_code = random_int(0, 9999);
+            settype($team_code, "string");
+            if (strlen($team_code) < 4) {
+                $team_code = str_pad($team_code, 4, "0", STR_PAD_LEFT);
+            }
+
+            
+            PresentationModel::save_team($team_code, $group, $presentation_date, $presentation_time);
+            
+            !empty($trainee_1) ? TraineeModel::create_trainee($team_code, $trainee_1) : "";
+            !empty($trainee_2) ? TraineeModel::create_trainee($team_code, $trainee_2) : "";
+            !empty($trainee_3) ? TraineeModel::create_trainee($team_code, $trainee_3) : "";
+            
+            if (isset($_POST["ajax"])) {
+                echo json_encode(["status" => "success", "msg" => "passed"]);
+                exit;
+            }
 
             header("Location: index.php?action=register_layout");
             exit;
@@ -100,11 +111,9 @@
         
         
         static function save_team_update() {
-            $validation_errors = [];
+            if ($_SERVER["REQUEST_METHOD"] != "POST") die(json_encode(["status" => "error", "msg" => "Forbidden"]));
 
-            if ($_SERVER["REQUEST_METHOD"] != "POST") die("Forbidden");
-
-            if (Helpers::is_missing("trainee_1", "trainee_2", "trainee_3", "group", "presentation_date", "presentation_time")) die("Something is missing");
+            if (Helpers::is_missing("trainee_1", "trainee_2", "trainee_3", "group", "presentation_date", "presentation_time")) die(json_encode(["status" => "error", "msg" => "Forbidden"]));
 
             $trainee_1 = trim($_POST["trainee_1"]);
             $trainee_2 = trim($_POST["trainee_2"]);
@@ -112,48 +121,44 @@
             $group = trim($_POST["group"]);
             $presentation_date = $_POST["presentation_date"];
             $presentation_time = $_POST["presentation_time"];
-            $team_code = $_POST["team_code"];
+
+            // TODO: Bring it from session for more security
+            session_start();
+            $team_code = $_SESSION["team_to_update"];
 
             // Date and Time are not checked here as the mentor may create the team before specify in the date and time
-            if (Helpers::is_empty($trainee_1, $group)) die("Trainee 1 and group fields are required!");
+            if (Helpers::is_empty($trainee_1, $group)) die(json_encode(["status" => "invalid", "msg" => "Trainee 1 and group fields are required!"]));
 
             if (Helpers::invalid_fullname($trainee_1) == 1) {
-                $validation_errors["trainee_1_err"] = "Invalid characters!";
+                die(json_encode(["status" => "invalid", "msg" => "Invalid characters!"]));
             } elseif (Helpers::invalid_fullname($trainee_1) == 2) {
-                $validation_errors["trainee_1_err"] = "Invalid! Fullname must contains at least 6 characters";
+                die(json_encode(["status" => "invalid", "msg" => "Invalid! Fullname must contains at least 6 characters"]));
             }
 
             if (Helpers::invalid_group($group) == 1) {
-                $validation_errors["group_err"] = "Invalid characters!";
+                die(json_encode(["status" => "invalid", "msg" => "Invalid characters!"]));
             } elseif (Helpers::invalid_group($group) == 2) {
-                $validation_errors["group_err"] = "Invalid! Group code must contains at least 6 characters";
+                die(json_encode(["status" => "invalid", "msg" => "Invalid! Group code must contains at least 6 characters"]));
             }
 
             // Validation When Inserting Multiple Trainees
             if (!empty($trainee_2)):
                 if (Helpers::invalid_fullname($trainee_2) == 1) {
-                    $validation_errors["trainee_2_err"] = "Invalid characters!";
+                    die(json_encode(["status" => "invalid", "msg" => "Invalid characters!"]));
                 } elseif (Helpers::invalid_fullname($trainee_2) == 2) {
-                    $validation_errors["trainee_2_err"] = "Invalid! Fullname must contains at least 6 characters";
+                    die(json_encode(["status" => "invalid", "msg" => "Invalid! Group code must contains at least 6 characters"]));
                 }
             endif;
             
             if (!empty($trainee_3)):
                 if (Helpers::invalid_fullname($trainee_3) == 1) {
-                    $validation_errors["trainee_3_err"] = "Invalid characters!";
+                    die(json_encode(["status" => "invalid", "msg" => "Invalid characters!"]));
                 } elseif (Helpers::invalid_fullname($trainee_3) == 2) {
-                    $validation_errors["trainee_3_err"] = "Invalid! Fullname must contains at least 6 characters";
+                    die(json_encode(["status" => "invalid", "msg" => "Invalid! Group code must contains at least 6 characters"]));
                 }
             endif;
 
-            // Sending notification to the team when date or time is inserted or updated
-
-
-            if ($validation_errors) {
-                die(json_encode($validation_errors));
-            }
-
-            // echo "Good";
+            // TODO: Send notification to the team when date or time is inserted or updated
 
             // Affecting NULL to empty fields
             $trainee_2 = empty($trainee_2)? NULL : $trainee_2;
@@ -161,11 +166,44 @@
             $presentation_date = empty($presentation_date)? NULL : $presentation_date;
             $presentation_time = empty($presentation_time)? NULL : $presentation_time;
 
-            echo $presentation_date;
-            echo $presentation_time;
+            $old_trainee_1 = $_SESSION["trainee_1"];
+            $old_trainee_2 = $_SESSION["trainee_2"];
+            $old_trainee_3 = $_SESSION["trainee_3"];
 
-            PresentationModel::save_team_changes($team_code, $group, $trainee_1, $trainee_2, $trainee_3, $presentation_date, $presentation_time);
+            // Update and delete trainees if changes occured when updating
+            if ($trainee_1 != $old_trainee_1) {
+                TraineeModel::update_trainee($team_code, $trainee_1, $old_trainee_1);
+            };
+            
+            if (empty($trainee_2) && !empty($old_trainee_2)) {
+                TraineeModel::delete_trainee($team_code, $old_trainee_2);
+            } else if (!empty($trainee_2) && empty($old_trainee_2)) {
+                TraineeModel::create_trainee($team_code, $trainee_2);
+            } else if ($trainee_2 != $old_trainee_2) {
+                TraineeModel::update_trainee($team_code, $trainee_2, $old_trainee_2);
+            }
 
+            if (empty($trainee_3) && !empty($old_trainee_3)) {
+                // Delete trainee 3
+                TraineeModel::delete_trainee($team_code, $old_trainee_3);
+            } else if (!empty($trainee_3) && empty($old_trainee_3)) {
+                // Insert trainee 3
+                TraineeModel::create_trainee($team_code, $trainee_3);
+            } else if ($trainee_3 != $old_trainee_3) {
+                // Update trainee 3
+                TraineeModel::update_trainee($team_code, $trainee_2, $old_trainee_3);
+            }
+
+            // echo $presentation_date;
+            // echo $presentation_time;
+
+            PresentationModel::save_team_changes($team_code, $group, $presentation_date, $presentation_time);
+            unset($_SESSION["team_to_update"]);
+
+            if (isset($_POST["ajax"])) {
+                echo json_encode(["status" => "success", "msg" => "pass"]);
+                exit;
+            }
             header("Location: index.php?action=mentor_homepage");
             exit;
             

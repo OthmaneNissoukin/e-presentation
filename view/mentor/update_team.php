@@ -19,18 +19,24 @@
 
         <div class="mb-3">
             <label for="trainee_1" class="form-label">Stagiaire 1</label>
-            <input value="<?= $data['trainee_1'] ?>" id="trainee_1" name="trainee_1" type="text" class="form-control" placeholder="NOM & Prenom" />
+            <input value="<?= isset($team_members[0]) ? $team_members[0]["fullname"] : "------" ?>" 
+                id="trainee_1" name="trainee_1" type="text" class="form-control" placeholder="NOM & Prenom" 
+            />
             <span class="text-danger fw-lighter" id="trainee_1_err"></span>
         </div>
             <div class="mb-3">
             <label for="trainee_2" class="form-label">Stagiaire 2</label>
-            <input value="<?= $data['trainee_2'] ?>" id="trainee_2" name="trainee_2" type="text" class="form-control" placeholder="NOM & Prenom" />
+            <input value="<?= isset($team_members[1]) ? $team_members[1]["fullname"] : "" ?>" 
+                id="trainee_2" name="trainee_2" type="text" class="form-control" placeholder="NOM & Prenom" 
+            />
             <span class="text-danger fw-lighter" id="trainee_2_err"></span>
 
         </div>
             <div class="mb-3">
             <label for="trainee_3" class="form-label">Stagiaire 3</label>
-            <input value="<?= $data['trainee_3'] ?>" id="trainee_3" name="trainee_3" type="text" class="form-control" placeholder="NOM & Prenom" />
+            <input value="<?= isset($team_members[2]) ? $team_members[2]["fullname"] : "" ?>" 
+                id="trainee_3" name="trainee_3" type="text" class="form-control" placeholder="NOM & Prenom" 
+            />
             <span class="text-danger fw-lighter" id="trainee_3_err"></span>
 
         </div>
@@ -57,7 +63,7 @@
 
 <script src="scripts/register.js" type="module"></script>
 <script src="scripts/utils.js" type="module"></script>
-<script src="scripts/register_update/ajax_code.js" type="module"></script>
+<script src="scripts/ajax_update/ajax_code.js" type="module"></script>
 
 
 <?php
