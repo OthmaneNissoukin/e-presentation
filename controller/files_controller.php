@@ -19,6 +19,8 @@
             // Uploading Application
             session_start();
 
+            Helpers::redirect_if_not_authenticated("team_code", "team_login");
+
             if ($_SERVER["REQUEST_METHOD"] != "POST") die(json_encode(["status" => "error", "message" => "Forbidden."]));
 
             if (Helpers::is_missing("repository_link", "ajax")) die(json_encode(["status" => "error", "message" => "Forbidden."]));
@@ -35,6 +37,9 @@
 
         static function upload_report() {
             // Upload Report
+
+            Helpers::redirect_if_not_authenticated("team_code", "team_login");
+
             if ($_SERVER["REQUEST_METHOD"] != "POST") die(json_encode(["status" => "error", "message" => "Forbidden."]));
 
             if (!isset($_FILES["report"])) die(json_encode(["status" => "error", "message" => "Not Authorized."]));
@@ -85,7 +90,8 @@
         
         static function upload_presentation() {
             // Upload Presentation
-            
+            Helpers::redirect_if_not_authenticated("team_code", "team_login");
+
             if ($_SERVER["REQUEST_METHOD"] != "POST") die(json_encode(["status" => "error", "message" => "Forbidden"]));
             if (!isset($_FILES["presentation"])) die(json_encode(["status" => "error", "message" => "Not Authorized."]));
     

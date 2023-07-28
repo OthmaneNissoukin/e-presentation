@@ -2,6 +2,7 @@
 
     class FileModel {
 
+        // TO_DELETE: We are no longer intializing files rows
         static function team_files_intialization($team_code) {
 
             $connection = PresentationModel::connection();

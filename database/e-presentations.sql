@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2023 at 12:54 AM
+-- Generation Time: Jul 28, 2023 at 12:21 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -42,7 +42,10 @@ CREATE TABLE `files` (
 
 INSERT INTO `files` (`file_id`, `team_code`, `file_path`, `file_type`, `uploader`, `last_update`) VALUES
 (11, '0616', 'uploads/WFS205_0616/Presentation.pptx', 'presentation', 'Shay Cormac', '2023-07-27 22:50:27'),
-(12, '0616', 'uploads/WFS205_0616/Report.pdf', 'report', 'Shay Cormac', '2023-07-27 22:50:47');
+(12, '0616', 'uploads/WFS205_0616/Report.pdf', 'report', 'Shay Cormac', '2023-07-27 22:50:47'),
+(14, '9765', 'uploads/OAM201_9765/Presentation.pptx', 'presentation', 'Haytham Kenway', '2023-07-28 10:44:29'),
+(15, '9765', 'https://github.com/OthmaneNissoukin/demo-interns', 'application', 'Haytham Kenway', '2023-07-28 10:44:53'),
+(16, '9765', 'uploads/OAM201_9765/Report.pdf', 'report', 'Haytham Kenway', '2023-07-28 10:45:23');
 
 -- --------------------------------------------------------
 
@@ -89,7 +92,7 @@ CREATE TABLE `team` (
   `group_code` varchar(10) NOT NULL,
   `presentation_date` date DEFAULT NULL,
   `presentation_time` time DEFAULT NULL,
-  `status` enum('Done','Ready','Not Ready','Inactivated') DEFAULT 'Inactivated'
+  `status` enum('Done','Ready','Not Ready') DEFAULT 'Not Ready'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -97,10 +100,10 @@ CREATE TABLE `team` (
 --
 
 INSERT INTO `team` (`team_code`, `group_code`, `presentation_date`, `presentation_time`, `status`) VALUES
-('0616', 'WFS205', '2023-09-20', '12:30:00', 'Inactivated'),
-('2691', 'WFS203', '2023-08-15', '14:30:00', 'Inactivated'),
-('5522', 'WFS205', '2023-08-13', '10:45:00', 'Inactivated'),
-('9765', 'OAM201', '2023-08-17', '08:30:00', 'Inactivated');
+('0616', 'WFS205', '2023-09-20', '12:30:00', 'Not Ready'),
+('2691', 'WFS203', '2023-08-15', '14:30:00', 'Not Ready'),
+('5522', 'WFS205', '2023-08-13', '10:45:00', 'Not Ready'),
+('9765', 'OAM201', '2023-08-17', '08:30:00', 'Ready');
 
 -- --------------------------------------------------------
 
@@ -113,21 +116,22 @@ CREATE TABLE `trainee` (
   `team_code` varchar(8) NOT NULL,
   `fullname` varchar(255) NOT NULL,
   `trainee_login` varchar(16) NOT NULL,
-  `trainee_password` varchar(255) NOT NULL DEFAULT '246810'
+  `trainee_password` varchar(255) NOT NULL DEFAULT '246810',
+  `status` enum('active','inactive') NOT NULL DEFAULT 'inactive'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `trainee`
 --
 
-INSERT INTO `trainee` (`trainee_id`, `team_code`, `fullname`, `trainee_login`, `trainee_password`) VALUES
-(1, '0616', 'Othmane Nissoukin', 'loggin', '246810'),
-(2, '0616', 'Shay Cormac', 'login', '246810'),
-(3, '9765', 'Haytham Kenway', 'udohx9', 'azerty123'),
-(4, '9765', 'Shay Cormac', 'BWrxem', 'azerty123'),
-(5, '9765', 'Conor Kenway', 'Mvzeq6', 'azerty123'),
-(6, '5522', 'John Doe', 'ALyghl', 'azerty123'),
-(7, '2691', 'Jane Doe', 'ACH3jG', 'azerty123');
+INSERT INTO `trainee` (`trainee_id`, `team_code`, `fullname`, `trainee_login`, `trainee_password`, `status`) VALUES
+(1, '0616', 'Othmane Nissoukin', 'loggin', '246810', 'inactive'),
+(2, '0616', 'Shay Cormac', 'login', '246810', 'inactive'),
+(3, '9765', 'Haytham Kenway', 'udohx9', 'Azerty123@', 'active'),
+(4, '9765', 'Shay Cormac', 'BWrxem', 'azerty123', 'inactive'),
+(5, '9765', 'Conor Kenway', 'Mvzeq6', 'azerty123', 'inactive'),
+(6, '5522', 'John Doe', 'ALyghl', 'azerty123', 'inactive'),
+(7, '2691', 'Jane Doe', 'ACH3jG', 'azerty123', 'inactive');
 
 --
 -- Indexes for dumped tables
@@ -176,7 +180,7 @@ ALTER TABLE `trainee`
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `notification`

@@ -1,10 +1,10 @@
 <?php
 
-use TeamController as GlobalTeamController;
-
     class TeamController{
 
         static function activate_account() {
+
+            Helpers::redirect_if_not_authenticated("user", "error_forbidden");
 
             if ($_SERVER["REQUEST_METHOD"] != "POST") die("forbidden");
 
@@ -20,12 +20,12 @@ use TeamController as GlobalTeamController;
             if ($password != $confirm_password) die("Password doesnt match the confirmation!");
             // Fields are setted
             session_start();
-            $team_code = $_SESSION["team_code"];
+            $trainee_id = $_SESSION["user"];
 
-            PresentationModel::update_password($team_code, $password, $confirm_password);
+            PresentationModel::update_password($trainee_id, $password);
 
             // Creating files rows in the database for this activating team account
-            FileModel::team_files_intialization($team_code);
+            //! This will be deleted => FileModel::team_files_intialization($team_code);
 
             if (isset($_POST["ajax"])) {
                 // Redirect with javascript when sending data using ajax
@@ -40,7 +40,7 @@ use TeamController as GlobalTeamController;
 
 
         static function authenticate_team() {
-
+            
             if ($_SERVER["REQUEST_METHOD"] != "POST") {
                 header("location: index.php?action=error_forbidden");
                 exit;
@@ -53,26 +53,26 @@ use TeamController as GlobalTeamController;
 
             if (Helpers::is_empty($login, $password))  die(json_encode(["status" => "required", "msg" => "All fields are required"]));
 
-            $team_data = TraineeModel::login_trainee($login, $password);
+            $user_data = TraineeModel::login_trainee($login, $password);
 
             // TODO: Adjust the query to take login and password at the same time
-            if (!$team_data) die(json_encode(["status" => "invalid", "msg" => "Wrong login or password"]));
+            if (!$user_data) die(json_encode(["status" => "invalid", "msg" => "Wrong login or password"]));
 
             // if ($team_data["password"] != $password) die(json_encode(["status" => "invalid", "msg" => "Wrong login or password"]));
 
             session_start();
-            $_SESSION["team_code"] = $team_data["team_code"];
-            $_SESSION["user"] = $team_data["trainee_id"];
+            $_SESSION["team_code"] = $user_data["team_code"];
+            $_SESSION["user"] = $user_data["trainee_id"];
 
             // TODO: Require account activation for every memeber of a team
-            // Check if the account is inactivated
-            // if ($team_data["status"] == "Inactivated"):
-            //     if (isset($_POST["ajax"])) die(json_encode(["status" => "inactivated", "msg" => "Activate account required"]));
+            //Check if the account is inactivated
+            if ($user_data["status"] == "inactive"):
+                if (isset($_POST["ajax"])) die(json_encode(["status" => "inactivated", "msg" => "Activate account required"]));
 
-            //     // This below lines wont execute if we are using ajax
-            //     header("Location: index.php?action=activate_account_layout");
-            //     exit;
-            // endif;
+                // This below lines wont execute if we are using ajax
+                header("Location: index.php?action=activate_account_layout");
+                exit;
+            endif;
 
             if (isset($_POST["ajax"])) die(json_encode(["status" => "success", "msg" => "Log in"]));
             header("Location: index.php?action=team_homepage");
@@ -80,6 +80,7 @@ use TeamController as GlobalTeamController;
         }
 
         static function change_team_status() {
+
             if (!isset($_SESSION)) {
                 session_start();
             }
@@ -90,14 +91,16 @@ use TeamController as GlobalTeamController;
             $presentation = FileModel::retrieve_path($team_code, "presentation");
 
             if (!empty($application) && !empty($report) && !empty($presentation)) {
-                PresentationModel::update_team_status($team_code);
+                PresentationModel::update_team_status($team_code, "Ready");
+            } else {
+                PresentationModel::update_team_status($team_code, "Not Ready");
             }
         }
 
         static function team_sign_out() {
             session_start();
 
-            Helpers::redirect_if_not_authenticated("team_code", "error_forbidden");
+            Helpers::redirect_if_not_authenticated("user", "error_forbidden");
             unset($_SESSION["team_code"]);
             unset($_SESSION["user"]);
 

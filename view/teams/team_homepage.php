@@ -3,7 +3,7 @@
     ob_start();
 ?>
 
-<h2 class="border-bottom pb-2 border-2 border-primary mb-4">Team Homepage</h2>
+<h2 class="border-bottom pb-2 border-2 border-primary mb-4">Welcome <span class="text-success"><?= $active_user ?></span></h2>
 
 <table class="table table-bordered border-secondary table-hover border-striped">
     <tr>

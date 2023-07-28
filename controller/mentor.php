@@ -3,7 +3,7 @@
     class MentorController {
 
         static function authenticate_admin() {
-
+            
             if ($_SERVER["REQUEST_METHOD"] != "POST") {
                 header("location: index.php?action=error_forbidden");
                 exit;
@@ -31,7 +31,7 @@
 
         static function create_team() {
 
-            // TODO: This page is only for authentified users.
+            Helpers::redirect_if_not_authenticated("admin", "error_forbidden");
 
             if ($_SERVER["REQUEST_METHOD"] != "POST") die(json_encode(["status" => "error", "msg" => "Forbidden"]));
 
@@ -111,6 +111,8 @@
         
         
         static function save_team_update() {
+            Helpers::redirect_if_not_authenticated("admin", "error_forbidden");
+
             if ($_SERVER["REQUEST_METHOD"] != "POST") die(json_encode(["status" => "error", "msg" => "Forbidden"]));
 
             if (Helpers::is_missing("trainee_1", "trainee_2", "trainee_3", "group", "presentation_date", "presentation_time")) die(json_encode(["status" => "error", "msg" => "Forbidden"]));
@@ -210,6 +212,8 @@
         }
 
         static function send_message(){
+
+            Helpers::redirect_if_not_authenticated("admin", "error_forbidden");
 
             if ($_SERVER["REQUEST_METHOD"] != "POST") die("forbidden");
 

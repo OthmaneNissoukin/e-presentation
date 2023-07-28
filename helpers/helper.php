@@ -58,13 +58,14 @@
     
         static function redirect_if_not_authenticated($expected_login, $login_page) {
 
+            if (!isset($_SESSION)) session_start();
+            
             if (!isset($_SESSION[$expected_login])) {
                 if (isset($_POST["ajax"])) {
                     die("forbidden");
                 } else {
                     header("location: index.php?action=$login_page");
                     exit;
-                    
                 }
             }
 

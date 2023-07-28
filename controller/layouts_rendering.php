@@ -19,6 +19,7 @@
 
             $team_data = PresentationModel::retrieve_teams_data($team_code);
             $team_members = TraineeModel::get_team_members($team_code);
+            $active_user = TraineeModel::get_trainee($_SESSION["user"])["fullname"];
 
             $notification_data = NotificationModel::latest_presentation_update($team_code);
 

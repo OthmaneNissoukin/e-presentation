@@ -48,6 +48,7 @@
         }
 
         static function retrieve_groups() {
+            // This is for filling groups datalist options
             $connection = self::connection();
             $query = $connection->query("SELECT DISTINCT group_code FROM team");
             return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -75,16 +76,16 @@
             ]);
         }
 
-        static function update_password($team_code, $password) {
+        static function update_password($trainee_id, $trainee_password) {
             $connection = self::connection();
 
             $request = $connection->prepare("
-                UPDATE team SET password = :password, status = 'Not Ready'
-                WHERE team_code = :team_code");
+                UPDATE trainee SET trainee_password = :trainee_password, status = 'active'
+                WHERE trainee_id = :trainee_id");
 
             $request->execute([
-                ":team_code" => $team_code,
-                ":password" => $password,
+                ":trainee_id" => $trainee_id,
+                ":trainee_password" => $trainee_password,
             ]);
         }
 
@@ -124,14 +125,14 @@
             $request->execute([":team_code" => $team_code]);
         }
 
-        static function update_team_status($team_code) {
+        static function update_team_status($team_code, $status) {
             $connection = self::connection();
 
             $request = $connection->prepare("
-                UPDATE team SET status = 'Ready'
+                UPDATE team SET status = :Ready
                 WHERE team_code = :team_code");
 
-            $request->execute([":team_code" => $team_code]);
+            $request->execute([":Ready" => $status, ":team_code" => $team_code]);
         }
 
         static function fetch_teams_full_info() {

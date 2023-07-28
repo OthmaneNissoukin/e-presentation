@@ -107,7 +107,8 @@ async function checkCollaborator(repository, token) {
         const response = await octokit.request("GET /repos/{owner}/{repo}/collaborators/{username}", {
             owner: owner_name,
             repo: repo_name,
-            username: "anouar-derdouri-development", // TODO: Make this to be dynamic
+            // username: "anouar-derdouri-development", // TODO: Make this to be dynamic
+            username: "NeroKetchup", // TODO: Make this to be dynamic
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
             },
@@ -121,7 +122,8 @@ async function checkCollaborator(repository, token) {
         if (err_msg == "bad credentials") {
             show_app_feedback("warning", "Invalid Token!");
         } else if (err_msg == "not found") {
-            show_app_feedback("warning", "anouar-derdouri-development is not a collaborator!");
+            // show_app_feedback("warning", "anouar-derdouri-development is not a collaborator!");
+            show_app_feedback("warning", "NeroKetchup is not a collaborator!");
         } else if (err_msg.endsWith("is not a user")) {
             show_app_feedback("warning", "Given user is not a collaborator!");
         } else if (err_msg == "requires authentication") {
