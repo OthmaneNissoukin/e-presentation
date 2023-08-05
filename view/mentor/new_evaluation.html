@@ -1,0 +1,63 @@
+<h2 class="border-bottom border-danger border-3 pb-3 mb-4">Create evaluation</h2>
+
+<div class="alert alert-danger d-none" id="alert_box"></div>
+
+<form action="index.php?action=create_evaluation" method="post">
+    <h4 class="border-bottom border-primary border-3 pb-3">Report questions</h4>
+    <table class="table table-bordered border-secondary">
+        <thead>
+            <th class="w-75">Question</th>
+            <th>Scale</th>
+        </thead>
+        <tbody id="report_table">
+            <tr>
+                <td>
+                    <input
+                        type="text"
+                        class="w-100 form-control"
+                        name="report_question[description][]"
+                        data-report="description"
+                    />
+                </td>
+                <td>
+                    <input type="text" class="w-100 form-control" name="report_question[scale][]" data-report="scale" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-warning mb-4" id="new_report">Add question</button>
+
+    <h4 class="border-bottom border-primary border-3 pb-3">Presentation questions</h4>
+    <table class="table table-bordered border-secondary">
+        <thead>
+            <th class="w-75">Question</th>
+            <th>Scale</th>
+        </thead>
+
+        <tbody id="presentation_table">
+            <tr>
+                <td>
+                    <input
+                        type="text"
+                        class="w-100 form-control"
+                        name="presentation_question[description][]"
+                        data-presentation="description"
+                    />
+                </td>
+                <td>
+                    <input
+                        type="text"
+                        class="w-100 form-control"
+                        name="presentation_question[scale][]"
+                        data-presentation="scale"
+                    />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-warning mb-4" id="new_presentation">Add question</button>
+
+    <input type="submit" value="Save" class="btn btn-primary btn-lg d-block m-auto w-25 rounded-0" />
+</form>
+
+<script src="scripts/create_evaluation.js"></script>

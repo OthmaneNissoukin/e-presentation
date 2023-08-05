@@ -197,5 +197,25 @@
             require "view/master.php";
         }
 
+        static function new_evaluation() {
+            Helpers::redirect_if_not_authenticated("admin", "login_admin_layout");
+            $title = "Create evaluation";
+            $content = file_get_contents("view/mentor/new_evaluation.html");
+            require "view/master.php";
+        }
+        
+        static function evaluation() {
+            Helpers::redirect_if_not_authenticated("admin", "login_admin_layout");
 
+            $questions = EvaluationModel::get_evaluation();
+
+            $report_questions = array_filter($questions, fn($item) => $item["question_topic"] == "report");
+            $presentation_questions = array_filter($questions, fn($item) => $item["question_topic"] == "presentation");
+
+            // $team_members = TraineeModel::get_team_members("9765"); // 3 Members
+            $team_members = TraineeModel::get_team_members("0616"); // 2 Members
+            // $team_members = TraineeModel::get_team_members("5522"); // 1 Member
+
+            require "view/mentor/evaluation.php";
+        }
     }

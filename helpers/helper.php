@@ -70,6 +70,27 @@
             }
 
         }
+
+        static function is_empty_field($array, $field) {
+            $result =  array_filter($array[$field], fn($item) => $item === ""); // empty funtion would consider 0 as empty
+
+            settype($result, "bool");
+            return $result;
+        }
+
+        static function is_not_nums($array) {
+            $result = array_filter($array, fn($item) => !preg_match("/^[0-9]+$/", $item));
+            return count($result) > 0;
+        }
+
+        static function score_not_in_range($scores, $scales) {
+            // Reindexing the array from 0 since the original array was using questions id as keys
+            $scores = array_values($scores);
+
+            for($i = 0; $i < count($scores); $i++) {
+                if (!($scores[$i] >= 0 && $scores[$i] <= $scales[$i])) return true;
+            }
+        }
     }
 
 ?>

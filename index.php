@@ -5,10 +5,12 @@
     require "model/trainee_model.php";
     require "model/file_model.php";
     require "model/notification_model.php";
+    require "model/evaluation_model.php";
     require "controller/layouts_rendering.php";
     require "controller/mentor.php";
     require "controller/team_controller.php";
     require "controller/files_controller.php";
+    require "controller/evaluation_controller.php";
 
     if (isset($_GET["action"])) {
 
@@ -65,6 +67,15 @@
                 LayoutRendering::login_admin_layout();
                 break;
 
+            case "new_evaluation":
+                LayoutRendering::new_evaluation();
+                break;
+            
+            case "evaluation":
+                LayoutRendering::evaluation();
+                break;
+            
+
             case "login_admin":
                 MentorController::authenticate_admin();
                 break;
@@ -111,6 +122,14 @@
             
             case "mentor_sign_out":
                 MentorController::mentor_sign_out();
+                break;
+
+            case "create_evaluation":
+                EvaluationController::create_evaluation();
+                break;
+            
+            case "submit_evaluation":
+                EvaluationController::submit_evaluation();
                 break;
 
             case "error_forbidden":
