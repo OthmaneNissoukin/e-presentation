@@ -84,6 +84,7 @@ class EvaluationController {
             $scales = $_POST["question_scale"];
         endif;
 
+        if (!isset($_POST["team_code"])) die(json_encode(["status" => "error", "message" => "forbidden"]));
 
         if (isset(json_encode($_POST["answer"], true)[$traines_id[0]])) {
             $trainee_1_scores = $_POST["answer"][$traines_id[0]];
@@ -106,6 +107,8 @@ class EvaluationController {
             if (Helpers::score_not_in_range($trainee_3_scores, $scales)) die(json_encode(["status" => "invalid", "message" => "Score is out of range!"]));
         }
 
+        $success = true;
+
         // Inserting results
         if (isset($traines_id[0])) {
             $trainee_1 = $traines_id[0];
@@ -121,6 +124,8 @@ class EvaluationController {
             $trainee_3 = $traines_id[2];
             EvaluationModel::submit_result($trainee_3, $trainee_3_scores);
         }
+
+        PresentationModel::update_team_status($_POST["team_code"], "done");
 
         echo json_encode(["status" => "success", "message" => "Evaluation has been submitted successfully!"]);
 

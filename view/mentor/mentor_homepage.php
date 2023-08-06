@@ -5,9 +5,6 @@
 
 <h2 class="border-bottom pb-2 border-2 border-primary mb-4">Mentor Homepage</h2>
 
-    <div class="alert alert-danger">
-        A presentation is ongoing and it will be finihed after <span class="fw-bold">15:23</span>
-    </div>
 
     <h4>Status</h4>
 
@@ -57,6 +54,7 @@
     <?php 
         $counter = 0;
         foreach($presentations as $presentation):
+            if (strtolower($presentation["status"]) == "done") continue;
             if ($counter >= 5) break;
             $counter++;
     ?>

@@ -3,6 +3,7 @@
 let form = document.querySelector("form"),
     scale_inputs = document.querySelectorAll("[type='text']"),
     presentation_rows = document.querySelectorAll("[data-categorty='presentation']"),
+    team_code = document.querySelector("[name='team_code']"),
     alert_box = document.getElementById("alert_box"),
     timer_box = document.getElementById("timer"),
     btn_start = document.getElementById("start"),
@@ -10,12 +11,22 @@ let form = document.querySelector("form"),
     btn_stop = document.getElementById("stop"),
     timer_indicator = document.getElementById("indicator"),
     timer_container = document.getElementById("timer_container"),
+    toast_message = document.getElementById("toast_message"),
     counter = null,
-    counter_started = false;
+    counter_started = false,
+    flag = 3;
 (seconds = 0), (minutes = 0);
 
+// For toast alert
+const toastTrigger = document.getElementById("liveToastBtn");
+const toastLiveExample = document.getElementById("liveToast");
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+toastTrigger.addEventListener("click", () => {
+    toastBootstrap.show();
+});
+
 scale_inputs.forEach((item) => {
-    item.addEventListener("change", function () {
+    item.addEventListener("keyup", function () {
         if (!this.value.match(/^[0-9\.]+$/) || Number(this.value) > Number(this.dataset.maxValue)) {
             this.style.borderColor = "Red";
         } else {
@@ -69,7 +80,6 @@ form.addEventListener("submit", (e) => {
 
         result[question_code] = answer;
 
-        // if (trainees[member].length == 0)
         trainees[member][question_code] = answer;
     });
 
@@ -81,13 +91,18 @@ form.addEventListener("submit", (e) => {
         if (this.readyState == 4 && this.status == 200) {
             if (JSON.parse(this.responseText).status == "success") {
                 document.querySelectorAll("input").forEach((item) => (item.disabled = true));
+                clearInterval(counter);
             }
         }
     };
 
     xhr.open("POST", "index.php?action=submit_evaluation");
     xhr.setRequestHeader("Content-type", "Application/x-www-form-urlencoded");
-    xhr.send(`ajax=true&answer=${JSON.stringify(trainees)}&question_scale=${JSON.stringify(scales)}`);
+    xhr.send(
+        `ajax=true&answer=${JSON.stringify(trainees)}&question_scale=${JSON.stringify(scales)}&team_code=${
+            team_code.value
+        }`
+    );
 });
 
 // Timer
@@ -108,9 +123,11 @@ btn_start.addEventListener("click", function () {
 
         timer_indicator.classList.toggle("invisible");
 
-        if (minutes == 2 && seconds == 0) {
+        if (minutes == 20 && seconds == 0) {
             timer_indicator.classList.remove("invisible");
 
+            toast_message.innerText = "Time out!";
+            toastTrigger.dispatchEvent(new Event("click"));
             clearInterval(counter);
             return;
         }
@@ -120,8 +137,20 @@ btn_start.addEventListener("click", function () {
             timer_container.classList.add("bg-danger");
         }
 
+        if (minutes == 15 && flag == 2) {
+            toast_message.innerText = "5 mins left!";
+            toastTrigger.dispatchEvent(new Event("click"));
+            flag -= 1;
+        }
+
+        if (minutes == 19 && flag == 3) {
+            toast_message.innerText = "1 min left!";
+            toastTrigger.dispatchEvent(new Event("click"));
+            flag -= 1;
+        }
+
         seconds += 1;
-    }, 250);
+    }, 50);
 });
 
 btn_pause.addEventListener("click", () => {
@@ -146,7 +175,7 @@ btn_stop.addEventListener("click", () => {
 presentation_rows.forEach((row) => {
     let scores_inputs = row.querySelectorAll("input[type='text']");
 
-    scores_inputs[0].addEventListener("change", () => {
+    scores_inputs[0].addEventListener("keyup", () => {
         scores_inputs.forEach((score_field) => {
             score_field.value = scores_inputs[0].value;
 

@@ -36,6 +36,7 @@
 <div class="alert alert-danger d-none" id="alert_box"></div>
 
 <form action="index.php?action=submit_evaluation" method="post">
+    <input type="hidden" name="team_code" value="<?= $team_members[0]['team_code'] ?>">
     <table class="table table-bordered border-secondary mt-5">
         <thead class="table-dark">
             <th class="w-50">Question</th>
@@ -110,6 +111,20 @@
 
     <input type="submit" value="Finish" class="btn btn-primary btn-lg d-block m-auto w-25 rounded-0" />
 </form>
+
+<button type="button" class="btn btn-primary d-none" id="liveToastBtn">Show live toast</button>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">Time alert</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toast_message">
+      5 mins left.
+    </div>
+  </div>
+</div>
 
 <script src="scripts/evaluation.js"></script>
 

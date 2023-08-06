@@ -11,7 +11,7 @@
     <form action="index.php?action=evaluation" method="post" class="mt-3 p-4 border">
         <div class="mb-3">
             <label class="form-label">Team</label>
-            <input type="text" value="<?= $team_code ?>" id="team_code" name="team_code" readonly class="form-control">
+            <input type="text" value="<?= $team_code ?>" id="team_code" name="team_code" class="form-control" readonly>
         </div>
 
         <div class="mb-3">
