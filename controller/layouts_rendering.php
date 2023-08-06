@@ -216,6 +216,8 @@
             $team_members = TraineeModel::get_team_members("0616"); // 2 Members
             // $team_members = TraineeModel::get_team_members("5522"); // 1 Member
 
+            $team_group = PresentationModel::retrieve_teams_data("0616");
+
             require "view/mentor/evaluation.php";
         }
     }

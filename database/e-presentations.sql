@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2023 at 12:21 PM
+-- Generation Time: Aug 06, 2023 at 03:19 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,32 @@ SET time_zone = "+00:00";
 --
 -- Database: `e-presentations`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `evaluation`
+--
+
+CREATE TABLE `evaluation` (
+  `evaluation_code` varchar(12) NOT NULL,
+  `question_code` int(11) NOT NULL,
+  `question_content` text NOT NULL,
+  `question_scale` float NOT NULL,
+  `question_topic` enum('presentation','report') DEFAULT NULL,
+  `season` varchar(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `evaluation`
+--
+
+INSERT INTO `evaluation` (`evaluation_code`, `question_code`, `question_content`, `question_scale`, `question_topic`, `season`) VALUES
+('E-551', 4, 'Report question #1', 4, 'report', '2023'),
+('E-551', 5, 'Report question #2', 6, 'report', '2023'),
+('E-551', 6, 'Report question #3', 5, 'report', '2023'),
+('E-551', 7, 'Presentation question #1', 6, 'presentation', '2023'),
+('E-551', 8, 'Presentation question #2', 4, 'presentation', '2023');
 
 -- --------------------------------------------------------
 
@@ -84,6 +110,125 @@ CREATE TABLE `notification` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `result`
+--
+
+CREATE TABLE `result` (
+  `result_id` int(11) NOT NULL,
+  `question_code` int(11) NOT NULL,
+  `trainee_id` int(11) NOT NULL,
+  `grade` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `result`
+--
+
+INSERT INTO `result` (`result_id`, `question_code`, `trainee_id`, `grade`) VALUES
+(250, 4, 1, 4),
+(251, 5, 1, 4),
+(252, 6, 1, 4),
+(253, 7, 1, 4),
+(254, 8, 1, 4),
+(255, 4, 2, 4),
+(256, 5, 2, 4),
+(257, 6, 2, 4),
+(258, 7, 2, 4),
+(259, 8, 2, 4),
+(260, 4, 1, 4),
+(261, 5, 1, 5),
+(262, 6, 1, 3),
+(263, 7, 1, 6),
+(264, 8, 1, 2),
+(265, 4, 2, 4),
+(266, 5, 2, 2),
+(267, 6, 2, 5),
+(268, 7, 2, 6),
+(269, 8, 2, 2),
+(270, 4, 1, 4),
+(271, 5, 1, 5),
+(272, 6, 1, 3),
+(273, 7, 1, 6),
+(274, 8, 1, 2),
+(275, 4, 2, 4),
+(276, 5, 2, 2),
+(277, 6, 2, 5),
+(278, 7, 2, 6),
+(279, 8, 2, 2),
+(280, 4, 1, 4),
+(281, 5, 1, 4),
+(282, 6, 1, 4),
+(283, 7, 1, 5),
+(284, 8, 1, 4),
+(285, 4, 2, 4),
+(286, 5, 2, 4),
+(287, 6, 2, 4),
+(288, 7, 2, 4),
+(289, 8, 2, 4),
+(290, 4, 1, 4),
+(291, 5, 1, 4),
+(292, 6, 1, 4),
+(293, 7, 1, 5),
+(294, 8, 1, 4),
+(295, 4, 2, 4),
+(296, 5, 2, 4),
+(297, 6, 2, 4),
+(298, 7, 2, 4),
+(299, 8, 2, 4),
+(300, 4, 1, 4),
+(301, 5, 1, 4),
+(302, 6, 1, 4),
+(303, 7, 1, 5),
+(304, 8, 1, 4),
+(305, 4, 2, 4),
+(306, 5, 2, 4),
+(307, 6, 2, 4),
+(308, 7, 2, 4),
+(309, 8, 2, 4),
+(310, 4, 1, 4),
+(311, 5, 1, 4),
+(312, 6, 1, 4),
+(313, 7, 1, 4),
+(314, 8, 1, 4),
+(315, 4, 2, 4),
+(316, 5, 2, 4),
+(317, 6, 2, 4),
+(318, 7, 2, 4),
+(319, 8, 2, 4),
+(320, 4, 1, 4),
+(321, 5, 1, 4),
+(322, 6, 1, 4),
+(323, 7, 1, 2),
+(324, 8, 1, 1),
+(325, 4, 2, 4),
+(326, 5, 2, 4),
+(327, 6, 2, 4),
+(328, 7, 2, 2),
+(329, 8, 2, 1),
+(330, 4, 1, 4),
+(331, 5, 1, 4),
+(332, 6, 1, 4),
+(333, 7, 1, 2),
+(334, 8, 1, 1),
+(335, 4, 2, 4),
+(336, 5, 2, 4),
+(337, 6, 2, 4),
+(338, 7, 2, 2),
+(339, 8, 2, 1),
+(340, 4, 1, 4),
+(341, 5, 1, 4),
+(342, 6, 1, 4),
+(343, 7, 1, 4),
+(344, 8, 1, 4),
+(345, 4, 2, 4),
+(346, 5, 2, 4),
+(347, 6, 2, 4),
+(348, 7, 2, 4),
+(349, 8, 2, 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `team`
 --
 
@@ -138,6 +283,12 @@ INSERT INTO `trainee` (`trainee_id`, `team_code`, `fullname`, `trainee_login`, `
 --
 
 --
+-- Indexes for table `evaluation`
+--
+ALTER TABLE `evaluation`
+  ADD PRIMARY KEY (`question_code`);
+
+--
 -- Indexes for table `files`
 --
 ALTER TABLE `files`
@@ -159,6 +310,12 @@ ALTER TABLE `notification`
   ADD KEY `team_code` (`team_code`);
 
 --
+-- Indexes for table `result`
+--
+ALTER TABLE `result`
+  ADD PRIMARY KEY (`result_id`);
+
+--
 -- Indexes for table `team`
 --
 ALTER TABLE `team`
@@ -177,6 +334,12 @@ ALTER TABLE `trainee`
 --
 
 --
+-- AUTO_INCREMENT for table `evaluation`
+--
+ALTER TABLE `evaluation`
+  MODIFY `question_code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
@@ -187,6 +350,12 @@ ALTER TABLE `files`
 --
 ALTER TABLE `notification`
   MODIFY `id_msg` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `result`
+--
+ALTER TABLE `result`
+  MODIFY `result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=350;
 
 --
 -- AUTO_INCREMENT for table `trainee`
@@ -209,6 +378,13 @@ ALTER TABLE `files`
 --
 ALTER TABLE `notification`
   ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`team_code`) REFERENCES `team` (`team_code`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `result`
+--
+ALTER TABLE `result`
+  ADD CONSTRAINT `result_ibfk_1` FOREIGN KEY (`question_code`) REFERENCES `evaluation` (`question_code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `result_ibfk_2` FOREIGN KEY (`trainee_id`) REFERENCES `trainee` (`trainee_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `trainee`

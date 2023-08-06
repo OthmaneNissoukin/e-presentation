@@ -14,9 +14,9 @@
             <th>Group</th>
         </thead>
         <tr>
-            <td>E-945</td>
-            <td>5412</td>
-            <td>DEV108</td>
+            <td><?= $questions[0]['evaluation_code'] ?></td>
+            <td><?= $team_members[0]['team_code'] ?></td>
+            <td><?= $team_group['group_code'] ?></td>
         </tr>
     </table>
     
@@ -36,9 +36,8 @@
 <div class="alert alert-danger d-none" id="alert_box"></div>
 
 <form action="index.php?action=submit_evaluation" method="post">
-    <h4 class="border-bottom border-primary border-3 pb-3">Report questions</h4>
-    <table class="table table-bordered border-secondary">
-        <thead>
+    <table class="table table-bordered border-secondary mt-5">
+        <thead class="table-dark">
             <th class="w-50">Question</th>
 
             <?php foreach($team_members as $member): ?>
@@ -47,6 +46,10 @@
         </thead>
 
         <tbody id="report_table">
+
+            <tr class="table-secondary border-secondary">
+                <td colspan="<?= count($team_members) + 1 ?>" class="fw-bold">Report evaluation</td>
+            </tr>
 
             <?php 
                 foreach($report_questions as $question):
@@ -72,20 +75,9 @@
                 endforeach;
             ?>
 
-        </tbody>
-    </table>
-
-    <h4 class="border-bottom border-primary border-3 pb-3">Presentation questions</h4>
-    <table class="table table-bordered border-secondary">
-        <thead>
-            <th class="w-50">Question</th>
-            <?php foreach($team_members as $member): ?>
-                <th><?= $member['fullname'] ?></th>
-            <?php endforeach; ?>
-            
-        </thead>
-
-        <tbody id="presentation_table">
+            <tr class="table-secondary border-secondary">
+                <td colspan="<?= count($team_members) + 1 ?>" class="fw-bold">Presentation evaluation</td>
+            </tr>
 
             <?php 
                 foreach($presentation_questions as $question):
@@ -111,10 +103,12 @@
                     <?php endforeach; ?>
                 </tr>
             <?php endforeach; ?>
+
         </tbody>
     </table>
 
-    <input type="submit" value="Save" class="btn btn-primary btn-lg d-block m-auto w-25 rounded-0" />
+
+    <input type="submit" value="Finish" class="btn btn-primary btn-lg d-block m-auto w-25 rounded-0" />
 </form>
 
 <script src="scripts/evaluation.js"></script>
