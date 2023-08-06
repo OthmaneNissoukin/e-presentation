@@ -9,27 +9,26 @@
 <section class="d-flex justify-content-between">
     <table class="w-25 table table-bordered border-3">
         <thead>
-            <th class="w-25">Evaluation</th>
-            <th class="w-25">Team</th>
+            <th >Evaluation</th>
+            <th >Team</th>
             <th>Group</th>
-            <th>Season</th>
         </thead>
         <tr>
             <td>E-945</td>
             <td>5412</td>
             <td>DEV108</td>
-            <td>2022/2023</td>
         </tr>
     </table>
+    
+    <div class="bg-secondary w-25 bg-opacity-10 d-flex align-items-center justify-content-center fs-4 fw-bold">
+        <i id="indicator" class="bi bi-circle-fill fs-6 mx-2 text-danger"></i> <span id="timer">00:00</span>
+    </div>
 
-    <div class="d-flex w-75 h-25">
-        <div class="d-flex justify-content-between">
-            <button class="btn w-50 rounded-0 btn-success"><i class="bi bi-caret-right-fill"></i>Start</button>
-            <button class="btn w-50 rounded-0 btn-warning"><i class="bi bi-pause-fill"></i>Pause</button>
-            <button class="btn w-50 rounded-0 btn-danger"><i class="bi bi-stop-fill"></i>Stop</button>
-        </div>
-        <div class="bg-secondary w-50 bg-opacity-25 d-flex px-2 align-items-center justify-content-center fs-4">
-            <i class="bi bi-circle-fill fs-4 mx-2 text-danger"></i> 15:30
+    <div class="d-flex">
+        <div class="d-flex flex-column">
+            <button id="start" class="btn rounded-0 px-5 btn-success"><i class="bi bi-caret-right-fill me-2"></i>Start</button>
+            <button id="pause" class="btn rounded-0 px-5 btn-warning"><i class="bi bi-pause-fill me-2"></i>Pause</button>
+            <button id="stop" class="btn rounded-0 px-5 btn-danger"><i class="bi bi-stop-fill me-2"></i>Stop</button>
         </div>
     </div>
 </section>
@@ -52,7 +51,7 @@
             <?php 
                 foreach($report_questions as $question):
             ?>
-                <tr>
+                <tr data-categorty="presentation" >
                     <td>
                         <input type="hidden" data-report="question" name="question_scale[]" value="<?= $question["question_scale"] ?>"/>
                         <p><?= $question['question_content'] ?></p>
@@ -61,7 +60,7 @@
                     <?php foreach($team_members as $member):?>
                         <td>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="answer[<?= $member['trainee_id'] ?>][<?= $question['question_code'] ?>]" data-max-value="<?= $question['question_scale'] ?>" />
+                                <input type="text" class="form-control" name="answer[<?= $member['trainee_id'] ?>][<?= $question['question_code'] ?>]" data-max-value="<?= $question['question_scale']?>" />
                                 <span class="input-group-text" id="basic-addon1">/ <?= $question["question_scale"] ?></span>
                             </div>
                         </td>
