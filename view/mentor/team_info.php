@@ -87,7 +87,7 @@
 
     <hr class="my-4" />
 
-    <button class="btn btn-primary me-3 mb-3">Start Presentation</button>
+    <a href="index.php?action=select_evaluation&team_code=<?= $team_info["team_code"] ?>" class="btn btn-primary me-3 mb-3">Start Presentation</a>
     <a href="index.php?action=update&team_code=<?= $team_info["team_code"] ?>" class="btn btn-info me-3 mb-3">Update Team</a>
     <a href="index.php?action=contact&team_code=<?= $team_info["team_code"] ?>"" class="btn btn-success me-3 mb-3">Send Message</a>
     <a href="register.html" class="btn btn-danger me-3 mb-3">Delete Team</a>

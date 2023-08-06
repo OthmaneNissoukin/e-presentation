@@ -191,6 +191,14 @@
             require "view/errors/403.php";
         }
         
+        static function bad_request() {
+            require "view/errors/400.php";
+        }
+        
+        static function prediction_failed() {
+            require "view/errors/412.php";
+        }
+        
         static function main() {
             $title = "Main page";
             $content = file_get_contents("view/main_page.html");
@@ -207,17 +215,38 @@
         static function evaluation() {
             Helpers::redirect_if_not_authenticated("admin", "login_admin_layout");
 
-            $questions = EvaluationModel::get_evaluation();
+            if (!isset($_POST["team_code"]) or !isset($_POST["evaluation_code"])) {
+                header("location: index.php?action=error_forbidden");
+                exit;
+            }
+
+            $team_code = $_POST["team_code"];
+            $evaluation_code = $_POST["evaluation_code"];
+            $team_group = PresentationModel::retrieve_teams_data($team_code);
+
+            if (!trim($team_code) or !$team_group) {
+                header("location: index.php?action=error_prediction_failed");
+                exit;
+            }
+
+
+            $questions = EvaluationModel::get_evaluation($evaluation_code);
 
             $report_questions = array_filter($questions, fn($item) => $item["question_topic"] == "report");
             $presentation_questions = array_filter($questions, fn($item) => $item["question_topic"] == "presentation");
 
-            // $team_members = TraineeModel::get_team_members("9765"); // 3 Members
-            $team_members = TraineeModel::get_team_members("0616"); // 2 Members
-            // $team_members = TraineeModel::get_team_members("5522"); // 1 Member
+            $team_members = TraineeModel::get_team_members($team_code);
 
-            $team_group = PresentationModel::retrieve_teams_data("0616");
 
             require "view/mentor/evaluation.php";
         }
+
+        static function select_evaluation() {
+            $all_evaluations = EvaluationModel::get_all_evaluations();
+
+            $team_code = $_GET["team_code"];
+
+            require "view/mentor/select_evaluation.php";
+        }
+
     }

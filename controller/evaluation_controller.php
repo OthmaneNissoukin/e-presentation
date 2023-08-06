@@ -64,6 +64,15 @@ class EvaluationController {
     static function submit_evaluation() {
         Helpers::redirect_if_not_authenticated("admin", "login_admin_layout");
 
+        if ($_SERVER["REQUEST_METHOD"] != "POST") {
+            if (isset($_POST["ajax"])) {
+                die(json_encode(["status" => "error", "message" => "forbidden"]));
+            } else {
+                header("location: index.php?action=error_forbidden");
+                exit;
+            }
+        }
+
         if (isset($_POST["ajax"])) :
             $traines_id = array_keys(json_decode($_POST["answer"], true));
             $scales = json_decode($_POST["question_scale"]);
@@ -119,5 +128,21 @@ class EvaluationController {
             header("location: index.php?action=mentor_hompage");
             exit;
         }
+    }
+
+    static function check_evaluation() {
+        Helpers::redirect_if_not_authenticated("admin", "login_admin_layout");
+
+        if (!isset($_POST["evaluation_code"])) die(json_encode(["status" => "error", "message" => "forbidden"]));
+        $evaluation_code = trim($_POST["evaluation_code"]);
+
+        if (empty($evaluation_code)) die(json_encode(["status" => "invalid", "message" => "All fields are required!"]));
+
+        if (!isset($_POST["ajax"])) die(json_encode(["status" => "error", "message" => "This operation requires enabled Javascript!"]));
+
+        $evaluation_data = EvaluationModel::get_evaluation($evaluation_code);
+
+        echo json_encode(["status" => "success", "message" => json_encode($evaluation_data)]);
+        exit;
     }
 }

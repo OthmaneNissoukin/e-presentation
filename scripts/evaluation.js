@@ -9,6 +9,7 @@ let form = document.querySelector("form"),
     btn_pause = document.getElementById("pause"),
     btn_stop = document.getElementById("stop"),
     timer_indicator = document.getElementById("indicator"),
+    timer_container = document.getElementById("timer_container"),
     counter = null,
     counter_started = false;
 (seconds = 0), (minutes = 0);
@@ -107,11 +108,16 @@ btn_start.addEventListener("click", function () {
 
         timer_indicator.classList.toggle("invisible");
 
-        if (minutes == 1 && seconds == 0) {
+        if (minutes == 2 && seconds == 0) {
             timer_indicator.classList.remove("invisible");
 
             clearInterval(counter);
             return;
+        }
+
+        if (minutes >= 1) {
+            timer_container.classList.remove("bg-primary");
+            timer_container.classList.add("bg-danger");
         }
 
         seconds += 1;
@@ -130,6 +136,9 @@ btn_stop.addEventListener("click", () => {
     timer_indicator.classList.remove("invisible");
     seconds = 0;
     minutes = 0;
+
+    timer_container.classList.add("bg-primary");
+    timer_container.classList.remove("bg-danger");
 });
 
 // Reflecting 1st presentation column scores to the other trainees

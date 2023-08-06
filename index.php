@@ -75,6 +75,11 @@
                 LayoutRendering::evaluation();
                 break;
             
+            
+            case "select_evaluation":
+                LayoutRendering::select_evaluation();
+                break;
+            
 
             case "login_admin":
                 MentorController::authenticate_admin();
@@ -132,8 +137,20 @@
                 EvaluationController::submit_evaluation();
                 break;
 
+            case "check_evaluation":
+                EvaluationController::check_evaluation();
+                break;
+
             case "error_forbidden":
                 LayoutRendering::forbidden();
+                break;
+            
+            case "error_bad_request":
+                LayoutRendering::bad_request();
+                break;
+            
+            case "error_prediction_failed":
+                LayoutRendering::prediction_failed();
                 break;
 
             default:

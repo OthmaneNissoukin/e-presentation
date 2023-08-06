@@ -25,10 +25,19 @@
             }
         }
 
-        static function get_evaluation() {
+        static function get_evaluation($evaluation_code) {
             $connection = PresentationModel::connection();
             
-            $select = $connection->query("SELECT * FROM evaluation WHERE season = YEAR(CURRENT_DATE)");
+            $select = $connection->prepare("SELECT * FROM evaluation WHERE evaluation_code = :evaluation_code");
+            $select->execute([":evaluation_code" => $evaluation_code]);
+
+            return $select->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        static function get_all_evaluations() {
+            $connection = PresentationModel::connection();
+            
+            $select = $connection->query("SELECT * FROM evaluation GROUP BY evaluation_code");
 
             return $select->fetchAll(PDO::FETCH_ASSOC);
         }

@@ -20,7 +20,7 @@
         </tr>
     </table>
     
-    <div class="bg-secondary w-25 bg-opacity-10 d-flex align-items-center justify-content-center fs-4 fw-bold">
+    <div id="timer_container" class="bg-primary w-25 bg-opacity-25 d-flex align-items-center justify-content-center fs-4 fw-bold">
         <i id="indicator" class="bi bi-circle-fill fs-6 mx-2 text-danger"></i> <span id="timer">00:00</span>
     </div>
 
