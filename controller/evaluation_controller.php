@@ -62,15 +62,21 @@ class EvaluationController {
     }
 
     static function submit_evaluation() {
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+        Helpers::redirect_if_not_authenticated("admin", "login_admin_layout");
 
-        $traines_id = array_keys($_POST["answer"]);
+        if (isset($_POST["ajax"])) :
+            $traines_id = array_keys(json_decode($_POST["answer"], true));
+            $scales = json_decode($_POST["question_scale"]);
 
-        $scales = $_POST["question_scale"];
+            $_POST["answer"] = json_decode($_POST["answer"], true);
+            $_POST["question_scale"] = json_decode($_POST["question_scale"], true);
+        else: 
+            $traines_id = array_keys($_POST["answer"]);
+            $scales = $_POST["question_scale"];
+        endif;
 
-        if (isset($_POST["answer"][$traines_id[0]])) {
+
+        if (isset(json_encode($_POST["answer"], true)[$traines_id[0]])) {
             $trainee_1_scores = $_POST["answer"][$traines_id[0]];
             if (Helpers::is_not_nums($trainee_1_scores)) die(json_encode(["status" => "invalid", "message" => "Score must be a number!"]));
             if (Helpers::score_not_in_range($trainee_1_scores, $scales)) die(json_encode(["status" => "invalid", "message" => "Score is out of range!"]));
@@ -105,6 +111,13 @@ class EvaluationController {
         if (isset($traines_id[2])) {
             $trainee_3 = $traines_id[2];
             EvaluationModel::submit_result($trainee_3, $trainee_3_scores);
+        }
+
+        echo json_encode(["status" => "success", "message" => "Evaluation has been submitted successfully!"]);
+
+        if (!isset($_POST["ajax"])) {
+            header("location: index.php?action=mentor_hompage");
+            exit;
         }
     }
 }
