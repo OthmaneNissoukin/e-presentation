@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 08, 2023 at 12:40 AM
+-- Generation Time: Aug 08, 2023 at 01:52 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -41,20 +41,14 @@ CREATE TABLE `evaluation` (
 --
 
 INSERT INTO `evaluation` (`evaluation_code`, `question_code`, `question_content`, `question_scale`, `question_topic`, `season`) VALUES
-('E-084', 'Q-177', 'New question #3', 15, 'presentation', '2023'),
-('E-475', 'Q-234', 'Question #21', 20, 'presentation', '2023'),
-('E-084', 'Q-257', 'New question #1', 5, 'report', '2023'),
-('E-084', 'Q-377', 'New question #1', 5, 'presentation', '2023'),
-('E-985', 'Q-456', 'Presentation question #1', 6, 'presentation', '2023'),
-('E-985', 'Q-589', 'Report #3', 4, 'report', '2023'),
-('E-985', 'Q-597', 'Presentation question #2', 6, 'presentation', '2023'),
-('E-985', 'Q-599', 'Report #1', 4, 'report', '2023'),
-('E-475', 'Q-643', 'Question #20', 20, 'report', '2023'),
-('E-985', 'Q-658', 'Presentation question #3', 3, 'presentation', '2023'),
-('E-985', 'Q-659', 'Report #2', 5, 'report', '2023'),
-('E-084', 'Q-705', 'New question #2', 5, 'report', '2023'),
-('E-084', 'Q-862', 'New question #3', 5, 'report', '2023'),
-('E-084', 'Q-875', 'New question #2', 5, 'presentation', '2023');
+('E-228', 'Q-098', 'Presentation question #3', 6, 'presentation', '2023'),
+('E-228', 'Q-171', 'Report question #4', 3, 'report', '2023'),
+('E-228', 'Q-191', 'Report question #3', 5, 'report', '2023'),
+('E-228', 'Q-325', 'Report question #2', 4, 'report', '2023'),
+('E-228', 'Q-702', 'Presentation question #1', 7, 'presentation', '2023'),
+('E-228', 'Q-762', 'Report question #1', 5, 'report', '2023'),
+('E-228', 'Q-781', 'Presentation question #4', 6, 'presentation', '2023'),
+('E-228', 'Q-915', 'Presentation question #2', 4, 'presentation', '2023');
 
 -- --------------------------------------------------------
 
@@ -125,30 +119,6 @@ CREATE TABLE `result` (
   `question_code` varchar(5) NOT NULL,
   `season` varchar(4) NOT NULL DEFAULT year(curdate())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `result`
---
-
-INSERT INTO `result` (`result_id`, `trainee_id`, `grade`, `question_code`, `season`) VALUES
-(61, 1, 2, 'Q-589', '2023'),
-(62, 1, 2, 'Q-599', '2023'),
-(63, 1, 2, 'Q-659', '2023'),
-(64, 1, 1, 'Q-456', '2023'),
-(65, 1, 1, 'Q-597', '2023'),
-(66, 1, 1, 'Q-658', '2023'),
-(67, 2, 2, 'Q-589', '2023'),
-(68, 2, 2, 'Q-599', '2023'),
-(69, 2, 2, 'Q-659', '2023'),
-(70, 2, 3, 'Q-456', '2023'),
-(71, 2, 3, 'Q-597', '2023'),
-(72, 2, 3, 'Q-658', '2023'),
-(73, 3, 2, 'Q-589', '2023'),
-(74, 3, 2, 'Q-599', '2023'),
-(75, 3, 2, 'Q-659', '2023'),
-(76, 3, 3, 'Q-456', '2023'),
-(77, 3, 3, 'Q-597', '2023'),
-(78, 3, 3, 'Q-658', '2023');
 
 -- --------------------------------------------------------
 
@@ -234,7 +204,8 @@ ALTER TABLE `notification`
 -- Indexes for table `result`
 --
 ALTER TABLE `result`
-  ADD PRIMARY KEY (`result_id`);
+  ADD PRIMARY KEY (`result_id`),
+  ADD KEY `idx_Registration_CustomizationSet` (`question_code`);
 
 --
 -- Indexes for table `team`
@@ -270,7 +241,7 @@ ALTER TABLE `notification`
 -- AUTO_INCREMENT for table `result`
 --
 ALTER TABLE `result`
-  MODIFY `result_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `result_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `trainee`
@@ -293,6 +264,12 @@ ALTER TABLE `files`
 --
 ALTER TABLE `notification`
   ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`team_code`) REFERENCES `team` (`team_code`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `result`
+--
+ALTER TABLE `result`
+  ADD CONSTRAINT `idx_Registration_CustomizationSet` FOREIGN KEY (`question_code`) REFERENCES `evaluation` (`question_code`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `trainee`
