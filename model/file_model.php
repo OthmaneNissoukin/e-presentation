@@ -2,16 +2,6 @@
 
     class FileModel {
 
-        // TO_DELETE: We are no longer intializing files rows
-        static function team_files_intialization($team_code) {
-
-            $connection = PresentationModel::connection();
-
-            $query = $connection->prepare("INSERT INTO files(team_code) VALUES(:team_code)");
-            $query->execute([":team_code" => $team_code]);
-        }
-        
-
         static function retrieve_path($team_code, $file_type) {
 
             $connection = PresentationModel::connection();
@@ -35,10 +25,10 @@
             ");
 
             $insert->execute([
-                ":team_code" => $team_code,
-                ":file_path" => $path,
-                ":file_type" => $type,
-                ":uploader" => $uploader
+                ":team_code" => htmlspecialchars($team_code),
+                ":file_path" => htmlspecialchars($path),
+                ":file_type" => htmlspecialchars($type),
+                ":uploader" => htmlspecialchars($uploader)
             ]);
         }
 

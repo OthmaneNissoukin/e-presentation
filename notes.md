@@ -10,7 +10,3 @@
 
     -   Send push up Email
     -   Ask for confirmation before saving email in the database
-
--   Redirect to homepage when an authenticated user tries to access the login or main page.
-
--   Filter and satitize all input fields.

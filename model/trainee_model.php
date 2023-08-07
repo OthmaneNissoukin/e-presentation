@@ -42,7 +42,11 @@
                 UPDATE trainee SET fullname = :new_fullname WHERE fullname = :old_fullname AND team_code = :team_code
             ");
 
-            $query->execute([":new_fullname" => $new_value, ":old_fullname" => $old_value, ":team_code" => $team_code]);
+            $query->execute([
+                ":new_fullname" => htmlspecialchars($new_value),
+                ":old_fullname" => htmlspecialchars($old_value),
+                ":team_code" => htmlspecialchars($team_code)
+                ]);
         }
 
         static function create_trainee($team_code, $fullname) {
@@ -56,7 +60,11 @@
                 INSERT INTO trainee VALUES(NULL, :team_code, :fullname, :login, 'azerty123', DEFAULT)
             ");
 
-            $query->execute([":fullname" => $fullname, ":team_code" => $team_code, ":login" => $random_login]);
+            $query->execute([
+                ":fullname" => htmlspecialchars($fullname), 
+                ":team_code" => htmlspecialchars($team_code), 
+                ":login" => htmlspecialchars($random_login)
+            ]);
         }
 
         static function get_trainee($trainee_id) {

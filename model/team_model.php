@@ -30,10 +30,10 @@
             $request = $connection->prepare("INSERT INTO team VALUES(:team_code, :group_code, :presentation_date, :presentation_time, DEFAULT)");
 
             $request->execute([
-                ":team_code" => $team_code,
-                ":group_code" => $group,
-                ":presentation_date" => $presentation_date,
-                ":presentation_time" => $presentation_time,
+                ":team_code" => htmlspecialchars($team_code),
+                ":group_code" => htmlspecialchars($group),
+                ":presentation_date" => htmlspecialchars($presentation_date),
+                ":presentation_time" => htmlspecialchars($presentation_time),
             ]);
         }
 
@@ -68,10 +68,10 @@
                 ");
 
             $request->execute([
-                ":team_code" => $team_code,
-                ":group_code" => $group,
-                ":presentation_date" => $presentation_date,
-                ":presentation_time" => $presentation_time
+                ":team_code" => htmlspecialchars($team_code),
+                ":group_code" => htmlspecialchars($group),
+                ":presentation_date" => htmlspecialchars($presentation_date),
+                ":presentation_time" => htmlspecialchars($presentation_time)
             ]);
         }
 
@@ -83,7 +83,7 @@
                 WHERE trainee_id = :trainee_id");
 
             $request->execute([
-                ":trainee_id" => $trainee_id,
+                ":trainee_id" => htmlspecialchars($trainee_id),
                 ":trainee_password" => $trainee_password,
             ]);
         }
@@ -97,8 +97,8 @@
                 (:team_code, :msg_content)");
 
             $request->execute([
-                ":team_code" => $team_code,
-                ":msg_content" => $msg_content,
+                ":team_code" => htmlspecialchars($team_code),
+                ":msg_content" => htmlspecialchars($msg_content),
             ]);
 
         }
@@ -121,7 +121,7 @@
                 UPDATE notification SET status = 'Read'
                 WHERE team_code = :team_code");
 
-            $request->execute([":team_code" => $team_code]);
+            $request->execute([":team_code" => htmlspecialchars($team_code)]);
         }
 
         static function update_team_status($team_code, $status) {
@@ -131,7 +131,11 @@
                 UPDATE team SET status = :Ready
                 WHERE team_code = :team_code");
 
-            $request->execute([":Ready" => $status, ":team_code" => $team_code]);
+            $request->execute(
+                [
+                    ":Ready" => htmlspecialchars($status),
+                    ":team_code" =>htmlspecialchars($team_code)
+                ]);
         }
 
         static function fetch_teams_full_info() {

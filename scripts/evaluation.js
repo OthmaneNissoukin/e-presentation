@@ -47,7 +47,7 @@ form.addEventListener("submit", (e) => {
         error = "";
 
     scale_inputs.forEach((item) => {
-        item.dispatchEvent(new Event("change"));
+        item.dispatchEvent(new Event("keyup"));
         let member = item.name.slice(item.name.indexOf("[") + 1, item.name.lastIndexOf("[") - 1);
 
         if (!(member in trainees)) trainees[member] = {};
@@ -62,10 +62,8 @@ form.addEventListener("submit", (e) => {
 
         if (!answer.match(/^[0-9]+(\.)?([0-9]+)?$/)) {
             error = "pattern_error";
-            return;
         } else if (Number(answer) > Number(item.dataset.maxValue)) {
             error = "invalid_error";
-            return;
         }
 
         if (error == "pattern_error") {

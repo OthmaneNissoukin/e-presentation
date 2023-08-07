@@ -32,9 +32,9 @@
                     [
                         ":evaluation_code" => $evaluation_code,
                         ":question_code" => $question_code,
-                        ":question_content" => $questions[$i],
-                        ":question_scale" => $scales[$i],
-                        ":question_topic" => $topic
+                        ":question_content" => htmlspecialchars($questions[$i]),
+                        ":question_scale" => filter_var($scales[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                        ":question_topic" => htmlspecialchars($topic)
                     ]
                     );
             }
@@ -74,14 +74,13 @@
                 )");
 
                 $insert->execute([
-                    ":trainee_id" => $trainee_id,
-                    ":grade" => $score,
-                    ":question_code" => $question_code,
+                    ":trainee_id" => htmlspecialchars($trainee_id),
+                    ":grade" => filter_var($score, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                    ":question_code" => htmlspecialchars($question_code),
                 ]);
 
             endforeach;
 
-            // $insert = $connection
         }
 
         static function get_result($trainee_code) {

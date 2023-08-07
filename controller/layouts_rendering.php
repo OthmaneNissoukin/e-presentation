@@ -3,10 +3,23 @@
     class LayoutRendering {
 
         static function team_login() {
+            if (!isset($_SESSION)) session_start();
+
+            if (isset($_SESSION["user"]) && isset($_SESSION["team_code"])) {
+                header("location: index.php?action=team_homepage");
+                exit;
+            }
             require "view/teams/team_login.php";
         }
 
         static function login_admin_layout() {
+            if (!isset($_SESSION)) session_start();
+
+            if (isset($_SESSION["admin"])) {
+                header("location: index.php?action=mentor_homepage");
+                exit;
+            }
+
             require "view/mentor/mentor_login.php";
         }
         
@@ -200,6 +213,16 @@
         }
         
         static function main() {
+            if (!isset($_SESSION)) session_start();
+
+            if (isset($_SESSION["admin"])) {
+                header("location: index.php?action=mentor_homepage");
+                exit;
+            } elseif(isset($_SESSION["user"]) && isset($_SESSION["team_code"])) {
+                header("location: index.php?action=team_homepage");
+                exit;
+            }
+
             $title = "Main page";
             $content = file_get_contents("view/main_page.html");
             require "view/master.php";

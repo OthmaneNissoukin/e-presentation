@@ -36,13 +36,13 @@
     </div>
 </section>
 
-<div class="alert alert-danger d-none" id="alert_box"></div>
+<div class="alert alert-danger d-none mt-5" id="alert_box"></div>
 
-<form action="index.php?action=submit_evaluation" method="post">
+<form action="index.php?action=submit_evaluation" method="post" class="mt-4">
     <input type="hidden" name="team_code" value="<?= $team_members[0]['team_code'] ?>">
     <div class="table-responsive">
 
-    <table class="table table-bordered border-secondary mt-5">
+    <table class="table table-bordered border-secondary">
         <thead class="table-dark">
             <th class="w-50">Question</th>
 
