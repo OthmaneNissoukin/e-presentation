@@ -70,13 +70,14 @@
                     NULL,
                     :trainee_id,
                     :grade,
-                    :question_code
+                    :question_code,
+                    DEFAULT
                 )");
 
                 $insert->execute([
                     ":trainee_id" => htmlspecialchars($trainee_id),
                     ":grade" => filter_var($score, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-                    ":question_code" => htmlspecialchars($question_code),
+                    ":question_code" => htmlspecialchars($question_code)
                 ]);
 
             endforeach;
