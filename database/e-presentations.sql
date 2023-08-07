@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2023 at 04:22 PM
+-- Generation Time: Aug 07, 2023 at 08:28 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -70,6 +70,13 @@ CREATE TABLE `files` (
   `uploader` varchar(255) NOT NULL,
   `last_update` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `files`
+--
+
+INSERT INTO `files` (`file_id`, `team_code`, `file_path`, `file_type`, `uploader`, `last_update`) VALUES
+(17, '5130', 'uploads/WFS203_5130/Report.pdf', 'report', 'Othmane Nissoukin', '2023-08-07 19:01:17');
 
 -- --------------------------------------------------------
 
@@ -163,7 +170,7 @@ CREATE TABLE `team` (
 
 INSERT INTO `team` (`team_code`, `group_code`, `presentation_date`, `presentation_time`, `status`) VALUES
 ('4148', 'OAM201', NULL, NULL, 'Not Ready'),
-('5130', 'WFS203', '2023-08-20', '08:30:00', 'Done');
+('5130', 'WFS203', '2023-08-20', '08:30:00', 'Not Ready');
 
 -- --------------------------------------------------------
 
@@ -185,7 +192,7 @@ CREATE TABLE `trainee` (
 --
 
 INSERT INTO `trainee` (`trainee_id`, `team_code`, `fullname`, `trainee_login`, `trainee_password`, `status`) VALUES
-(1, '5130', 'Othmane Nissoukin', 'm5rUXY', 'azerty123', 'inactive'),
+(1, '5130', 'Othmane Nissoukin', 'loggin', 'loggin', 'active'),
 (2, '5130', 'Ahmed Eljabary', '8Ha6RI', 'azerty123', 'inactive'),
 (3, '5130', 'Conor Kenway', 'T25vUa', 'azerty123', 'inactive'),
 (4, '4148', 'John Doe', 'TSgW3j', 'azerty123', 'inactive'),
@@ -251,7 +258,7 @@ ALTER TABLE `trainee`
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `notification`

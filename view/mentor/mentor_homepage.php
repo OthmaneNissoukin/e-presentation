@@ -64,10 +64,10 @@
             <td><?= substr($presentation["presentation_time"], 0, 5) ?></td>
             <td><?= $presentation["status"] ?></td>
             <td>
-                <a href="index.php?action=team_info&team_code=<?= $presentation["team_code"] ?>" class="btn btn-sm btn-info">Team Details</a>
-                <a href="index.php?action=update&team_code=<?= $presentation["team_code"] ?>" class="btn btn-warning btn-sm">Update</a>
-                <a href="index.php?action=contact&team_code=<?= $presentation["team_code"] ?>" class="btn btn-success btn-sm">Contact Team</a>
-                <button class="btn btn-danger btn-sm">Delete</button>
+                <a href="index.php?action=team_info&team_code=<?= $presentation["team_code"] ?>" class="btn btn-sm btn-info rounded-0">Team Details</a>
+                <a href="index.php?action=update&team_code=<?= $presentation["team_code"] ?>" class="btn btn-warning btn-sm rounded-0">Update</a>
+                <a href="index.php?action=contact&team_code=<?= $presentation["team_code"] ?>" class="btn btn-success btn-sm rounded-0">Contact Team</a>
+                <button class="btn btn-danger btn-sm rounded-0">Delete</button>
             </td>
             </td>
         </tr>

@@ -31,7 +31,7 @@
         <textarea class="form-control" name="msg_content" id="msg_content" cols="30" rows="10"></textarea>
         </div>
 
-        <input type="submit" value="Send Message" class="btn btn-primary btn-lg" />
+        <input type="submit" value="Send Message" class="btn btn-primary btn-lg rounded-0" />
     </fieldset>
     </form>
     

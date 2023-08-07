@@ -5,7 +5,12 @@
 
 <h2 class="border-bottom pb-2 border-2 border-primary mb-4">Sign In : <span class="text-danger">Team</span></h2>
 
-<form action="index.php?action=authenticate_team" method="POST">
+<form action="index.php?action=authenticate_team" method="POST" >
+
+    <div class="alert alert-info">
+        <strong>Login: </strong> loggin <br>
+        <strong>Password: </strong>loggin
+    </div>
 
     <aside id="flash_alert" class="alert alert-danger d-none">
 
@@ -24,7 +29,8 @@
             <span id="pwd_error_box" class="text-danger fw-light fs-6"></span>
         </div>
 
-        <input type="submit" value="Login" class="btn btn-primary btn-lg" />
+        <input type="submit" value="Login" class="btn btn-primary px-5 rounded-0" />
+        <a href="index.php?action=login_admin_layout" class="btn btn-secondary px-4 rounded-0">Admin space</a>
     </fieldset>
 </form>
 

@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <input type="submit" name="upload" value="Submit" class="btn btn-primary">
+        <input type="submit" name="upload" value="Submit" class="btn btn-primary rounded-0">
     </fieldset>
 
 </form>
@@ -56,7 +56,7 @@
                 <div id="report_bar"  class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%; height: 10px"></div>
             </div>
         </div>
-        <input type="submit" name="upload" value="Upload" class="btn btn-primary">
+        <input type="submit" name="upload" value="Upload" class="btn btn-primary rounded-0">
     </fieldset>
 </form>
 
@@ -78,7 +78,7 @@
                 <div id="presentation_bar" class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
             </div>
         </div>
-        <input type="submit" value="Upload" class="btn btn-primary" />
+        <input type="submit" value="Upload" class="btn btn-primary rounded-0" />
     </fieldset>
 
 </form>

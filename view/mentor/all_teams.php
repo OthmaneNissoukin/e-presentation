@@ -36,10 +36,10 @@
                 <td><?= $team["status"] ?></td>
 
                 <td>
-                    <a href="index.php?action=team_info&team_code=<?= $team["team_code"] ?>" class="btn btn-sm btn-primary" target="_blank">Team Info</a>
-                    <a href="index.php?action=update&team_code=<?= $team["team_code"] ?>" class="btn btn-sm btn-warning" target="_blank">Update</a>
-                    <button class="btn btn-sm btn-success">Contact</button>
-                    <button class="btn btn-sm btn-danger">Delete</button>
+                    <a href="index.php?action=team_info&team_code=<?= $team["team_code"] ?>" class="btn btn-sm btn-primary rounded-0" target="_blank">Team Info</a>
+                    <a href="index.php?action=update&team_code=<?= $team["team_code"] ?>" class="btn btn-sm btn-warning rounded-0" target="_blank">Update</a>
+                    <a href="index.php?action=contact&team_code=<?= $team['team_code'] ?>" class="btn btn-sm btn-success rounded-0">Contact</a>
+                    <button class="btn btn-sm btn-danger rounded-0">Delete</button>
                 </td>
             </tr>
         

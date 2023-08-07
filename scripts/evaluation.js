@@ -132,18 +132,18 @@ btn_start.addEventListener("click", function () {
             return;
         }
 
-        if (minutes >= 1) {
+        if (minutes >= 15) {
             timer_container.classList.remove("bg-primary");
             timer_container.classList.add("bg-danger");
         }
 
-        if (minutes == 15 && flag == 2) {
+        if (minutes == 15 && flag == 3) {
             toast_message.innerText = "5 mins left!";
             toastTrigger.dispatchEvent(new Event("click"));
             flag -= 1;
         }
 
-        if (minutes == 19 && flag == 3) {
+        if (minutes == 19 && flag == 2) {
             toast_message.innerText = "1 min left!";
             toastTrigger.dispatchEvent(new Event("click"));
             flag -= 1;

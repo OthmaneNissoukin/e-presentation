@@ -7,6 +7,11 @@
 
 <form action="index.php?action=login_admin" method="POST">
 
+    <div class="alert alert-info">
+        <strong>Login: </strong> admin1 <br>
+        <strong>Password: </strong>admin1
+    </div>
+
     <aside id="flash_alert" class="alert alert-danger d-none">
 
     </aside>
@@ -24,7 +29,8 @@
             <span id="pwd_error_box" class="text-danger fw-light fs-6"></span>
         </div>
 
-        <input type="submit" value="Login" class="btn btn-primary btn-lg" />
+        <input type="submit" value="Login" class="btn btn-primary px-5 rounded-0"/>
+        <a href="index.php?action=team_login" class="btn btn-secondary px-4 rounded-0">Team space</a>
     </fieldset>
 </form>
 
