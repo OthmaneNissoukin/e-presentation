@@ -6,26 +6,29 @@
 
 <h2 class="border-bottom border-danger border-3 pb-3 mb-4">Evaluation</h2>
 
-<section class="d-flex justify-content-between">
-    <table class="w-25 table table-bordered border-3">
+<section class="d-flex flex-column flex-md-row justify-content-md-between">
+    <table class="table table-bordered border-3">
         <thead>
             <th >Evaluation</th>
             <th >Team</th>
             <th>Group</th>
+            <th>Season</th>
         </thead>
         <tr>
             <td><?= $questions[0]['evaluation_code'] ?></td>
             <td><?= $team_members[0]['team_code'] ?></td>
             <td><?= $team_group['group_code'] ?></td>
+            <td><?= date("Y") ?></td>
         </tr>
     </table>
     
-    <div id="timer_container" class="bg-primary w-25 bg-opacity-25 d-flex align-items-center justify-content-center fs-4 fw-bold">
-        <i id="indicator" class="bi bi-circle-fill fs-6 mx-2 text-danger"></i> <span id="timer">00:00</span>
-    </div>
-
-    <div class="d-flex">
-        <div class="d-flex flex-column">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between w-100">
+        <aside aria-hidden="true"></aside>
+        <div id="timer_container" class="bg-primary bg-opacity-25 d-flex align-items-center justify-content-center fs-4 fw-bold px-5 py-4">
+            <i id="indicator" class="bi bi-circle-fill fs-6 mx-2 text-danger"></i> <span id="timer">00:00</span>
+        </div>
+        <div class="d-flex flex-md-column">
             <button id="start" class="btn rounded-0 px-5 btn-success"><i class="bi bi-caret-right-fill me-2"></i>Start</button>
             <button id="pause" class="btn rounded-0 px-5 btn-warning"><i class="bi bi-pause-fill me-2"></i>Pause</button>
             <button id="stop" class="btn rounded-0 px-5 btn-danger"><i class="bi bi-stop-fill me-2"></i>Stop</button>
@@ -37,6 +40,8 @@
 
 <form action="index.php?action=submit_evaluation" method="post">
     <input type="hidden" name="team_code" value="<?= $team_members[0]['team_code'] ?>">
+    <div class="table-responsive">
+
     <table class="table table-bordered border-secondary mt-5">
         <thead class="table-dark">
             <th class="w-50">Question</th>
@@ -107,7 +112,8 @@
 
         </tbody>
     </table>
-
+    </div>
+        
 
     <input type="submit" value="Finish" class="btn btn-primary btn-lg d-block m-auto w-25 rounded-0" />
 </form>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2023 at 03:24 PM
+-- Generation Time: Aug 07, 2023 at 04:22 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -42,12 +42,14 @@ CREATE TABLE `evaluation` (
 
 INSERT INTO `evaluation` (`evaluation_code`, `question_code`, `question_content`, `question_scale`, `question_topic`, `season`) VALUES
 ('E-084', 'Q-177', 'New question #3', 15, 'presentation', '2023'),
+('E-475', 'Q-234', 'Question #21', 20, 'presentation', '2023'),
 ('E-084', 'Q-257', 'New question #1', 5, 'report', '2023'),
 ('E-084', 'Q-377', 'New question #1', 5, 'presentation', '2023'),
 ('E-985', 'Q-456', 'Presentation question #1', 6, 'presentation', '2023'),
 ('E-985', 'Q-589', 'Report #3', 4, 'report', '2023'),
 ('E-985', 'Q-597', 'Presentation question #2', 6, 'presentation', '2023'),
 ('E-985', 'Q-599', 'Report #1', 4, 'report', '2023'),
+('E-475', 'Q-643', 'Question #20', 20, 'report', '2023'),
 ('E-985', 'Q-658', 'Presentation question #3', 3, 'presentation', '2023'),
 ('E-985', 'Q-659', 'Report #2', 5, 'report', '2023'),
 ('E-084', 'Q-705', 'New question #2', 5, 'report', '2023'),
@@ -113,32 +115,33 @@ CREATE TABLE `result` (
   `result_id` int(11) NOT NULL,
   `trainee_id` int(11) NOT NULL,
   `grade` float NOT NULL,
-  `question_code` varchar(5) NOT NULL
+  `question_code` varchar(5) NOT NULL,
+  `season` varchar(4) NOT NULL DEFAULT year(curdate())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `result`
 --
 
-INSERT INTO `result` (`result_id`, `trainee_id`, `grade`, `question_code`) VALUES
-(61, 1, 2, 'Q-589'),
-(62, 1, 2, 'Q-599'),
-(63, 1, 2, 'Q-659'),
-(64, 1, 1, 'Q-456'),
-(65, 1, 1, 'Q-597'),
-(66, 1, 1, 'Q-658'),
-(67, 2, 2, 'Q-589'),
-(68, 2, 2, 'Q-599'),
-(69, 2, 2, 'Q-659'),
-(70, 2, 3, 'Q-456'),
-(71, 2, 3, 'Q-597'),
-(72, 2, 3, 'Q-658'),
-(73, 3, 2, 'Q-589'),
-(74, 3, 2, 'Q-599'),
-(75, 3, 2, 'Q-659'),
-(76, 3, 3, 'Q-456'),
-(77, 3, 3, 'Q-597'),
-(78, 3, 3, 'Q-658');
+INSERT INTO `result` (`result_id`, `trainee_id`, `grade`, `question_code`, `season`) VALUES
+(61, 1, 2, 'Q-589', '2023'),
+(62, 1, 2, 'Q-599', '2023'),
+(63, 1, 2, 'Q-659', '2023'),
+(64, 1, 1, 'Q-456', '2023'),
+(65, 1, 1, 'Q-597', '2023'),
+(66, 1, 1, 'Q-658', '2023'),
+(67, 2, 2, 'Q-589', '2023'),
+(68, 2, 2, 'Q-599', '2023'),
+(69, 2, 2, 'Q-659', '2023'),
+(70, 2, 3, 'Q-456', '2023'),
+(71, 2, 3, 'Q-597', '2023'),
+(72, 2, 3, 'Q-658', '2023'),
+(73, 3, 2, 'Q-589', '2023'),
+(74, 3, 2, 'Q-599', '2023'),
+(75, 3, 2, 'Q-659', '2023'),
+(76, 3, 3, 'Q-456', '2023'),
+(77, 3, 3, 'Q-597', '2023'),
+(78, 3, 3, 'Q-658', '2023');
 
 -- --------------------------------------------------------
 
@@ -159,6 +162,7 @@ CREATE TABLE `team` (
 --
 
 INSERT INTO `team` (`team_code`, `group_code`, `presentation_date`, `presentation_time`, `status`) VALUES
+('4148', 'OAM201', NULL, NULL, 'Not Ready'),
 ('5130', 'WFS203', '2023-08-20', '08:30:00', 'Done');
 
 -- --------------------------------------------------------
@@ -183,7 +187,10 @@ CREATE TABLE `trainee` (
 INSERT INTO `trainee` (`trainee_id`, `team_code`, `fullname`, `trainee_login`, `trainee_password`, `status`) VALUES
 (1, '5130', 'Othmane Nissoukin', 'm5rUXY', 'azerty123', 'inactive'),
 (2, '5130', 'Ahmed Eljabary', '8Ha6RI', 'azerty123', 'inactive'),
-(3, '5130', 'Conor Kenway', 'T25vUa', 'azerty123', 'inactive');
+(3, '5130', 'Conor Kenway', 'T25vUa', 'azerty123', 'inactive'),
+(4, '4148', 'John Doe', 'TSgW3j', 'azerty123', 'inactive'),
+(5, '4148', 'Ahmed Eljabary', 'KTcILN', 'azerty123', 'inactive'),
+(6, '4148', 'Conor Kenway', 'jFLOgQ', 'azerty123', 'inactive');
 
 --
 -- Indexes for dumped tables
@@ -262,7 +269,7 @@ ALTER TABLE `result`
 -- AUTO_INCREMENT for table `trainee`
 --
 ALTER TABLE `trainee`
-  MODIFY `trainee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `trainee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

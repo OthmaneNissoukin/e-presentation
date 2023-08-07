@@ -55,7 +55,6 @@ class EvaluationController {
             $is_exist_evaluation = EvaluationModel::get_evaluation($evaluation_code);
             
             if (!$is_exist_evaluation) break;
-            echo "Ops";
         }
 
         EvaluationModel::create_evaluation($evaluation_code, $report_questions_info["description"], $report_questions_info["scale"], "report");

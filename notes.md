@@ -4,8 +4,6 @@
 
 ## Tasks
 
--   Create unique id for team_code, question_code, evaluation_code
-
 -   Roll back changes when error happens when inserting/deleting data from database
 
 -   Require users to insert their email

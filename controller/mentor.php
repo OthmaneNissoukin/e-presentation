@@ -85,12 +85,18 @@
             $presentation_time = empty($presentation_time)? NULL : $presentation_time;
 
             // Generate 4 Digits number as a team identifier
-            $team_code = random_int(0, 9999);
-            settype($team_code, "string");
-            if (strlen($team_code) < 4) {
-                $team_code = str_pad($team_code, 4, "0", STR_PAD_LEFT);
-            }
+            while (true) {
+                $team_code = random_int(0, 9999);
+                settype($team_code, "string");
+                if (strlen($team_code) < 4) {
+                    $team_code = str_pad($team_code, 4, "0", STR_PAD_LEFT);
+                }
+            
+                // Checking if this generated code is available to use as new team identifier
+                $team_exists = PresentationModel::retrieve_teams_data($team_code);
 
+                if (!$team_exists) break;
+            }
             
             PresentationModel::save_team($team_code, $group, $presentation_date, $presentation_time);
             
