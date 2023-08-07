@@ -77,7 +77,7 @@ function create_table(evaluations_array) {
         td_1.style.paddingLeft = "32px";
         tr_clone.append(td_1, td_2);
 
-        if (row["question_topic"] == "report") presentation_row.after(tr_clone);
-        else presentation_row.before(tr_clone);
+        if (row["question_topic"] == "report") presentation_row.before(tr_clone);
+        else presentation_row.after(tr_clone);
     });
 }
