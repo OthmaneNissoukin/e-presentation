@@ -64,4 +64,16 @@
 
             // $insert = $connection
         }
+
+        static function get_result($trainee_code) {
+            $connection = PresentationModel::connection();
+
+            $select = $connection->prepare("
+                SELECT * FROM result JOIN evaluation ON result.question_code = evaluation.question_code
+                WHERE trainee_id = :trainee_id
+            ");
+
+            $select->execute(["trainee_id" => $trainee_code]);
+            return $select->fetchAll(PDO::FETCH_ASSOC);
+        }
     }

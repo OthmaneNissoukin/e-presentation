@@ -249,4 +249,13 @@
             require "view/mentor/select_evaluation.php";
         }
 
+        static function evaluation_result() {
+            Helpers::redirect_if_not_authenticated("user", "team_login");
+
+            if (!isset($_SESSION)) session_start();
+            $trainee_id = $_SESSION["user"];
+            $result = EvaluationModel::get_result($trainee_id);
+            require "view/teams/result.php";
+        }
+
     }

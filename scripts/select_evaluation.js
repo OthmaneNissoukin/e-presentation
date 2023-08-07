@@ -24,9 +24,6 @@ btn_check.addEventListener("click", () => {
                 alert_box.classList.remove("d-none");
             } else if (response.status == "success") {
                 create_table(JSON.parse(response.message));
-                JSON.parse(response.message).forEach((element) => {
-                    console.log(element);
-                });
                 alert_box.classList.add("d-none");
             } else {
                 alert_box.classList.add("d-none");
@@ -67,7 +64,7 @@ function create_table(evaluations_array) {
     tr.dataset.created = "true";
 
     // Remove previous results
-    document.querySelectorAll("tr[created='true']").forEach((item) => item.remove());
+    document.querySelectorAll("table tr[data-created='true']").forEach((item) => item.remove());
 
     evaluations_array.forEach((row) => {
         const td_1 = td.cloneNode(),

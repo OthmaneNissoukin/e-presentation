@@ -55,7 +55,7 @@ class EvaluationController {
         if (isset($_POST["ajax"])) {
             die(json_encode(["status" => "success", "message" => "evaluation has been created successfully!"]));
         } else {
-            header("location: index.php?action=mentor_homepage");
+            header("location: index.php?action=new_evaluation");
             exit;
         }
 
@@ -106,8 +106,6 @@ class EvaluationController {
             if (Helpers::is_not_nums($trainee_3_scores)) die(json_encode(["status" => "invalid", "message" => "Score must be a number!"]));
             if (Helpers::score_not_in_range($trainee_3_scores, $scales)) die(json_encode(["status" => "invalid", "message" => "Score is out of range!"]));
         }
-
-        $success = true;
 
         // Inserting results
         if (isset($traines_id[0])) {

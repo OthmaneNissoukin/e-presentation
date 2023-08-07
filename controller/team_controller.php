@@ -19,7 +19,7 @@
             
             if ($password != $confirm_password) die("Password doesnt match the confirmation!");
             // Fields are setted
-            session_start();
+            if (!isset($_SESSION)) session_start();
             $trainee_id = $_SESSION["user"];
 
             PresentationModel::update_password($trainee_id, $password);

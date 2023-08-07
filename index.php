@@ -79,7 +79,10 @@
             case "select_evaluation":
                 LayoutRendering::select_evaluation();
                 break;
-            
+
+            case "evaluation_result":
+                LayoutRendering::evaluation_result();
+                break;
 
             case "login_admin":
                 MentorController::authenticate_admin();

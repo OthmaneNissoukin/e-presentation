@@ -111,21 +111,29 @@ form.addEventListener("submit", function (e) {
     // Checking the validation of both presentation and report questions by combining two arrays to pass to the function
     if (!is_valid_questions(report_descriptions_inputs.concat(presentation_descriptions_inputs))) {
         alert_box.innerText = "Questions cannot be empty!";
+        alert_box.classList.remove("alert-primary");
+        alert_box.classList.add("alert-danger");
         alert_box.classList.remove("d-none");
         return;
     } else {
         alert_box.innerText = "";
+        alert_box.classList.remove("alert-primary");
+        alert_box.classList.add("alert-danger");
         alert_box.classList.remove("d-none");
     }
 
     switch (is_valid_scales(report_scales_inputs.concat(presentation_scales_inputs))) {
         case "empty_error":
             alert_box.innerText = "Scale is required and cannot be 0!";
+            alert_box.classList.remove("alert-primary");
+            alert_box.classList.add("alert-danger");
             alert_box.classList.remove("d-none");
             return;
 
         case "pattern_error":
             alert_box.innerText = "Scale must be a number!";
+            alert_box.classList.remove("alert-primary");
+            alert_box.classList.add("alert-danger");
             alert_box.classList.remove("d-none");
             return;
 
@@ -157,11 +165,16 @@ form.addEventListener("submit", function (e) {
     xhr.onreadystatechange = function () {
         if (this.status == 200 && this.readyState == 4) {
             if (JSON.parse(this.responseText).status != "success") {
+                alert_box.classList.remove("alert-primary");
+                alert_box.classList.add("alert-danger");
                 alert_box.classList.remove("d-none");
                 alert_box.innerText = JSON.parse(this.responseText).message;
             } else {
-                alert_box.innerText = "";
-                alert_box.classList.add("d-none");
+                alert_box.innerText = "Evaluation has been created successfully!";
+                alert_box.classList.add("alert-success");
+                alert_box.classList.remove("alert-danger");
+                alert_box.classList.remove("d-none");
+                form.reset();
             }
         }
     };
