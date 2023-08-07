@@ -246,6 +246,12 @@
 
             $team_code = $_GET["team_code"];
 
+            $team_data = PresentationModel::retrieve_teams_data($team_code);
+            $team_has_passed = false;
+            if ($team_data) {
+                if (strtolower($team_data['status']) == "done") $team_has_passed = true;
+            }
+
             require "view/mentor/select_evaluation.php";
         }
 

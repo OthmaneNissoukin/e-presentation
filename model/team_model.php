@@ -27,14 +27,13 @@
         static function save_team($team_code, $group, $presentation_date, $presentation_time) {
             $connection = self::connection();
 
-            $request = $connection->prepare("INSERT INTO team VALUES(:team_code, :group_code, :presentation_date, :presentation_time, :stat)");
+            $request = $connection->prepare("INSERT INTO team VALUES(:team_code, :group_code, :presentation_date, :presentation_time, DEFAULT)");
 
             $request->execute([
                 ":team_code" => $team_code,
                 ":group_code" => $group,
                 ":presentation_date" => $presentation_date,
                 ":presentation_time" => $presentation_time,
-                ":stat" => "Inactivated"
             ]);
         }
 

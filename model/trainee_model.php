@@ -53,7 +53,7 @@
             $random_login = implode("", array_slice($random_login, 0, 6));
 
             $query = $connection->prepare("
-                INSERT INTO trainee VALUES(NULL, :team_code, :fullname, :login, 'azerty123')
+                INSERT INTO trainee VALUES(NULL, :team_code, :fullname, :login, 'azerty123', DEFAULT)
             ");
 
             $query->execute([":fullname" => $fullname, ":team_code" => $team_code, ":login" => $random_login]);

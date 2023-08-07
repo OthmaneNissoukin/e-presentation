@@ -79,7 +79,7 @@
         }
 
         static function is_not_nums($array) {
-            $result = array_filter($array, fn($item) => !preg_match("/^[0-9]+$/", $item));
+            $result = array_filter($array, fn($item) => !preg_match("/^[0-9]+(\.)?([0-9]+)?$/", $item));
             return count($result) > 0;
         }
 

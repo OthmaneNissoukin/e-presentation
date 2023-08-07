@@ -4,9 +4,9 @@
 
 ## Tasks
 
--   Adjust question code pattern
+-   Create unique id for team_code, question_code, evaluation_code
 
--   Restrict repassing evaluation for teams twice without deleting old data
+-   Roll back changes when error happens when inserting/deleting data from database
 
 -   Require users to insert their email
 
@@ -14,3 +14,5 @@
     -   Ask for confirmation before saving email in the database
 
 -   Redirect to homepage when an authenticated user tries to access the login or main page.
+
+-   Filter and satitize all input fields.

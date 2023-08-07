@@ -35,7 +35,7 @@
                 <td>
                     <a href="index.php?action=team_info&team_code=<?= $presentation["team_code"] ?>" class="btn btn-sm btn-primary" target="_blank">Team Info</a>
                     <a href="index.php?action=update&team_code=<?= $presentation["team_code"] ?>" class="btn btn-sm btn-warning" target="_blank">Update</a>
-                    <button class="btn btn-sm btn-danger">Start</button>
+                    <a href="index.php?action=select_evaluation&team_code=<?= $presentation["team_code"] ?>" class="btn btn-sm btn-danger">Start</a>
                 </td>
             </tr>
         

@@ -5,9 +5,15 @@
             $connection = PresentationModel::connection();
             
             for($i = 0; $i < count($questions); $i++) {
+                // Generate question code
+                $question_code =  rand(0, 999);
+                settype($question_code, "string");
+                $question_code = str_pad($question_code, 3, "0", STR_PAD_LEFT);
+                $question_code = "Q-" . $question_code;
+
                 $insert = $connection->prepare("INSERT INTO evaluation VALUES(
                     :evaluation_code,
-                    NULL,
+                    :question_code,
                     :question_content,
                     :question_scale,
                     :question_topic,
@@ -17,6 +23,7 @@
                 $insert->execute(
                     [
                         ":evaluation_code" => $evaluation_code,
+                        ":question_code" => $question_code,
                         ":question_content" => $questions[$i],
                         ":question_scale" => $scales[$i],
                         ":question_topic" => $topic
@@ -45,19 +52,23 @@
         static function submit_result($trainee_id, $array_scores) {
             $connection = PresentationModel::connection();
 
+            // Delete previous results when repassing exam for this member
+            $delete = $connection->prepare("DELETE FROM result WHERE trainee_id = :trainee_id");
+            $delete->execute([":trainee_id" => $trainee_id]);
+
             foreach($array_scores as $question_code => $score):
 
                 $insert = $connection->prepare("INSERT INTO result VALUES(
                     NULL,
-                    :question_code,
                     :trainee_id,
-                    :grade
+                    :grade,
+                    :question_code
                 )");
 
                 $insert->execute([
-                    ":question_code" => $question_code,
                     ":trainee_id" => $trainee_id,
-                    ":grade" => $score
+                    ":grade" => $score,
+                    ":question_code" => $question_code,
                 ]);
 
             endforeach;

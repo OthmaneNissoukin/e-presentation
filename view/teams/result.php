@@ -46,7 +46,6 @@
 
             <?php 
                 foreach($result as $question):
-                    $total += $question["grade"];
                     if ($question["question_topic"] == "report"):
             ?>
                 <tr>

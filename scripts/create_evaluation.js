@@ -54,12 +54,15 @@ function is_valid_questions(array_questions_input) {
 
 function is_valid_scales(array_scales_input) {
     let error = "";
+    let total = 0;
     array_scales_input.forEach((item) => {
+        total += Number(item.value);
         if (item.value === "" || item.value == 0) {
             error = "empty_error";
             return;
-        } else if (!item.value.match(/^[0-9\.]+$/)) {
+        } else if (!item.value.match(/^[0-9]+(\.)?([0-9]+)?$/)) {
             error = "pattern_error";
+            return;
         }
     });
     return error;
@@ -88,7 +91,7 @@ question_scale.forEach((item) => {
     item.addEventListener("blur", function () {
         if (item.value === "") {
             item.style.borderColor = "red";
-        } else if (!item.value.match(/^[0-9\.]+$/)) {
+        } else if (!item.value.match(/^[0-9]+(\.)?([0-9]+)?$/)) {
             item.style.borderColor = "red";
         } else {
             item.style.borderColor = "#ddd";
@@ -142,6 +145,17 @@ form.addEventListener("submit", function (e) {
             alert_box.classList.add("d-none");
     }
 
+    let all_scales_inputes = report_scales_inputs.concat(presentation_scales_inputs);
+    let total_scales = all_scales_inputes.map((ele) => Number(ele.value)).reduce((curr, next) => curr + next);
+
+    if (total_scales !== 40) {
+        alert_box.innerText = "Evaluation total must be 40!";
+        alert_box.classList.remove("alert-primary");
+        alert_box.classList.add("alert-danger");
+        alert_box.classList.remove("d-none");
+        return;
+    }
+
     let report_descriptions = report_descriptions_inputs.map((item) => item.value);
     let report_scales = report_scales_inputs.map((item) => item.value);
 
@@ -157,8 +171,6 @@ form.addEventListener("submit", function (e) {
         description: presentation_descriptions,
         scale: presentation_scales,
     };
-
-    console.table(JSON.stringify());
 
     const xhr = new XMLHttpRequest();
 

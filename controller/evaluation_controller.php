@@ -38,16 +38,25 @@ class EvaluationController {
         if (Helpers::is_empty_field($presentation_questions_info, "description")) die(json_encode(["status" => "invalid", "message" => "empty presentation question!"]));
         if (Helpers::is_empty_field($presentation_questions_info, "scale")) die(json_encode(["status" => "invalid", "message" => "empty presentation scale!"]));
 
+        $all_scales = array_merge($report_questions_info["scale"], $presentation_questions_info["scale"]);
 
-        if (Helpers::is_not_nums(array_merge($report_questions_info["scale"], $presentation_questions_info["scale"]))) {
-                die(json_encode(["status" => "invalid", "message" => "scale must be a number!"]));
-            };
+        if (Helpers::is_not_nums($all_scales)) die(json_encode(["status" => "invalid", "message" => "scale must be a number!"]));
+
+        if (array_sum($all_scales) != 40) die(json_encode(["status" => "invalid", "message" => "evaluation total must be 40!"]));
 
         // Generate evaluation code
-        $evaluation_code =  rand(0, 999);
-        settype($evaluation_code, "string");
-        $evaluation_code = str_pad($evaluation_code, 3, "0", STR_PAD_LEFT);
-        $evaluation_code = "E-" . $evaluation_code;
+        while (true) {
+            $evaluation_code =  rand(0, 999);
+            settype($evaluation_code, "string");
+            $evaluation_code = str_pad($evaluation_code, 3, "0", STR_PAD_LEFT);
+            $evaluation_code = "E-" . $evaluation_code;
+    
+            // Checking if the generated code exists in database already since it is a primary key
+            $is_exist_evaluation = EvaluationModel::get_evaluation($evaluation_code);
+            
+            if (!$is_exist_evaluation) break;
+            echo "Ops";
+        }
 
         EvaluationModel::create_evaluation($evaluation_code, $report_questions_info["description"], $report_questions_info["scale"], "report");
         EvaluationModel::create_evaluation($evaluation_code, $presentation_questions_info["description"], $presentation_questions_info["scale"], "presentation");

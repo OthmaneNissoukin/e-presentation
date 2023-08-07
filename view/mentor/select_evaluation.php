@@ -4,7 +4,11 @@
     ob_start();
 ?>
 
-    <h2>Select evaluation</h2>
+    <h2 class="border-bottom pb-2 border-2 border-primary mb-4">Select evaluation</h2>
+    
+    <?php if ($team_has_passed):?>
+        <div class="alert alert-warning">This team has already passed an evaluation, re-passing will delete their previous result!</div>
+    <?php endif;?>
 
     <div id="alert_box" class="alert alert-danger d-none"></div>
 

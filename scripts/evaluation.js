@@ -27,7 +27,7 @@ toastTrigger.addEventListener("click", () => {
 
 scale_inputs.forEach((item) => {
     item.addEventListener("keyup", function () {
-        if (!this.value.match(/^[0-9\.]+$/) || Number(this.value) > Number(this.dataset.maxValue)) {
+        if (!this.value.match(/^[0-9]+(\.)?([0-9]+)?$/) || Number(this.value) > Number(this.dataset.maxValue)) {
             this.style.borderColor = "Red";
         } else {
             this.style.borderColor = "#ddd";
@@ -60,7 +60,7 @@ form.addEventListener("submit", (e) => {
             questions_codes.push(question_code);
         }
 
-        if (!answer.match(/^[0-9\.]+$/)) {
+        if (!answer.match(/^[0-9]+(\.)?([0-9]+)?$/)) {
             error = "pattern_error";
             return;
         } else if (Number(answer) > Number(item.dataset.maxValue)) {
@@ -181,7 +181,7 @@ presentation_rows.forEach((row) => {
 
             // FIXME: Using dispatch event here lead to exceed call stack max size
             if (
-                !score_field.value.match(/^[0-9\.]+$/) ||
+                !score_field.value.match(/^[0-9]+(\.)?([0-9]+)?$/) ||
                 Number(score_field.value) > Number(score_field.dataset.maxValue)
             ) {
                 score_field.style.borderColor = "Red";
