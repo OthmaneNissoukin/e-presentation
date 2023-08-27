@@ -214,6 +214,7 @@
             }
 
             $title = "Main page";
+            $styles = [];
             $content = file_get_contents("app/view/main_page.html");
             require "app/view/master.php";
         }
