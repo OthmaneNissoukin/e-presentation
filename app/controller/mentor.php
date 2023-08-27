@@ -76,7 +76,6 @@
                 }
             endif;
 
-            // TODO: Send notification to the team when date or time is inserted or updated
 
             // Affecting NULL to empty fields
             $trainee_2 = empty($trainee_2)? NULL : $trainee_2; // Instead of null, we will delete this trainee
@@ -85,6 +84,7 @@
             $presentation_time = empty($presentation_time)? NULL : $presentation_time;
 
             // Generate 4 Digits number as a team identifier
+            $team_code = null;
             while (true) {
                 $team_code = random_int(0, 9999);
                 settype($team_code, "string");
@@ -103,6 +103,18 @@
             !empty($trainee_1) ? TraineeModel::create_trainee($team_code, $trainee_1) : "";
             !empty($trainee_2) ? TraineeModel::create_trainee($team_code, $trainee_2) : "";
             !empty($trainee_3) ? TraineeModel::create_trainee($team_code, $trainee_3) : "";
+
+            // Send notification if date or time is setted.
+            if ($presentation_date or $presentation_time) {
+                $formated_date = implode("-", array_reverse(explode("-", $presentation_date)));
+
+                if (is_null($presentation_time)) $formated_time = "(Time still unknown)";
+                else $formated_time = substr($presentation_time, 0, 5);
+
+                $msg_content = "Your prensentation date has been scheduled on $formated_date at $formated_time";
+                $msg_object = "Presentation time update.";
+                NotificationModel::send_custom_message($team_code, $msg_content, $msg_object);
+            }
             
             if (isset($_POST["ajax"])) {
                 echo json_encode(["status" => "success", "msg" => "passed"]);
@@ -131,7 +143,9 @@
             $presentation_time = $_POST["presentation_time"];
 
             // TODO: Bring it from session for more security
-            session_start();
+            if (!isset($_SESSION)) {
+                session_start();
+            }
             $team_code = $_SESSION["team_to_update"];
 
             // Date and Time are not checked here as the mentor may create the team before specify in the date and time
@@ -165,8 +179,6 @@
                     die(json_encode(["status" => "invalid", "msg" => "Invalid! Group code must contains at least 6 characters"]));
                 }
             endif;
-
-            // TODO: Send notification to the team when date or time is inserted or updated
 
             // Affecting NULL to empty fields
             $trainee_2 = empty($trainee_2)? NULL : $trainee_2;
@@ -202,10 +214,31 @@
                 TraineeModel::update_trainee($team_code, $trainee_2, $old_trainee_3);
             }
 
-            // echo $presentation_date;
-            // echo $presentation_time;
-
             PresentationModel::save_team_changes($team_code, $group, $presentation_date, $presentation_time);
+
+            // Send notification if date or time is setted.
+            if ($presentation_date or $presentation_time) {
+
+                // Detect changes for date and time to notify team members.
+                $team_data = PresentationModel::retrieve_teams_data($team_code);
+
+                $older_date = $team_data["presentation_date"];
+                $older_time = $team_data["presentation_time"];
+
+                if ($presentation_date != $older_date or $presentation_time != $older_time) {
+
+                    $formated_date = implode("-", array_reverse(explode("-", $presentation_date)));
+    
+                    if (is_null($presentation_time)) $formated_time = "(Time still unknown)";
+                    else $formated_time = substr($presentation_time, 0, 5);
+    
+                    $msg_content = "Your prensentation date has been updated to: $formated_date at $formated_time";
+                    $msg_object = "Presentation time update.";
+                    NotificationModel::send_custom_message($team_code, $msg_content, $msg_object);
+                }
+
+            }
+
             unset($_SESSION["team_to_update"]);
 
             if (isset($_POST["ajax"])) {
@@ -230,7 +263,7 @@
 
             if (Helpers::is_empty($team_code, $msg_content)) die("All fields are required!");
 
-            PresentationModel::send_custom_message($team_code, $msg_content);
+            NotificationModel::send_custom_message($team_code, $msg_content);
 
             header("Location: index.php?action=mentor_homepage");
             exit;

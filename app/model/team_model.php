@@ -88,42 +88,6 @@
             ]);
         }
 
-        static function send_custom_message($team_code, $msg_content) {
-
-            $connection = self::connection();
-
-            $request = $connection->prepare("
-                INSERT INTO notification(team_code, msg_content) VALUES
-                (:team_code, :msg_content)");
-
-            $request->execute([
-                ":team_code" => htmlspecialchars($team_code),
-                ":msg_content" => htmlspecialchars($msg_content),
-            ]);
-
-        }
-
-        static function retrieve_team_messages($team_code) {
-            $connection = self::connection();
-            $query = $connection->prepare("SELECT * FROM notification
-                WHERE team_code = :team_code
-                ORDER BY sent_time DESC");
-
-            $query->execute([":team_code" => $team_code]);
-            return $query->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-
-        static function change_message_status($team_code) {
-            $connection = self::connection();
-
-            $request = $connection->prepare("
-                UPDATE notification SET status = 'Read'
-                WHERE team_code = :team_code");
-
-            $request->execute([":team_code" => htmlspecialchars($team_code)]);
-        }
-
         static function update_team_status($team_code, $status) {
             $connection = self::connection();
 

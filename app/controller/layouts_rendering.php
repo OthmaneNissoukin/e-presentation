@@ -172,7 +172,7 @@
 
             $team_code = $_SESSION["team_code"];
 
-            $team_messages = PresentationModel::retrieve_team_messages($team_code);
+            $team_messages = NotificationModel::retrieve_team_messages($team_code);
 
             $counter = 0;
 

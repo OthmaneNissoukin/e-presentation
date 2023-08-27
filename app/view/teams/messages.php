@@ -22,7 +22,7 @@
         <article class="mb-3 border border-2 rounded-3 p-2 bg-success bg-opacity-10">
             <aside class="d-flex justify-content-between">
                 <!-- TODO: It will be the object and not sender name -->
-                <h5>From Mentor Name</h5>
+                <h5><?=$message["msg_object"]?></h5>
                 <p class="text-danger fs-6 fw-bold">
                     <?= $message["sent_time"] ?>
                     <?php if (strtolower($message["status"]) == "unread"): ?>
