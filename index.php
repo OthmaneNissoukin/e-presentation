@@ -1,16 +1,16 @@
 <?php
-    require "helpers/helper.php";
-    require "helpers/files_helpers.php";
-    require "model/team_model.php";
-    require "model/trainee_model.php";
-    require "model/file_model.php";
-    require "model/notification_model.php";
-    require "model/evaluation_model.php";
-    require "controller/layouts_rendering.php";
-    require "controller/mentor.php";
-    require "controller/team_controller.php";
-    require "controller/files_controller.php";
-    require "controller/evaluation_controller.php";
+    require "app/controller/helpers/helper.php";
+    require "app/controller/helpers/files_helpers.php";
+    require "app/model/team_model.php";
+    require "app/model/trainee_model.php";
+    require "app/model/file_model.php";
+    require "app/model/notification_model.php";
+    require "app/model/evaluation_model.php";
+    require "app/controller/layouts_rendering.php";
+    require "app/controller/mentor.php";
+    require "app/controller/team_controller.php";
+    require "app/controller/files_controller.php";
+    require "app/controller/evaluation_controller.php";
 
     if (isset($_GET["action"])) {
 

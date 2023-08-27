@@ -4,6 +4,7 @@
 
 ## Tasks
 
+-   Hash passwords
 -   Roll back changes when error happens when inserting/deleting data from database
 
 -   Require users to insert their email
