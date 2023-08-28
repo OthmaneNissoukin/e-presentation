@@ -1,16 +1,20 @@
 <?php
     $title = "Activate account";
 
-    $styles = []; ob_start();
+    $styles = ["css/login_page.css"];
+    ob_start();
 ?>
 
-<h2 class="border-bottom pb-2 border-2 border-primary mb-4">Activate account</h2>
 
 <form action="index.php?action=activate_account" method="POST">
-    
-    <div class="alert alert-danger d-none" id="alert"></div>
-
     <fieldset class="border p-3">
+        <h4 class="text-secondary text-center">Activate account</h4>
+        <div class="alert alert-danger d-none" id="alert"></div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email adresse</label>
+            <input type="email" name="email" id="email" class="form-control" placeholder="trainee@e-mail.com">
+            <span class="text-danger fw-lighter" id="email_err"></span>
+        </div>
         <div class="mb-3">
             <label for="password" class="form-label">New password</label>
             <input type="password" name="password" id="password" class="form-control" placeholder="********">
@@ -22,7 +26,7 @@
             <span class="text-danger fw-lighter" id="confirm_password_err"></span>
         </div>
 
-        <input type="submit" value="Save changes" class="btn btn-primary">
+        <input type="submit" value="Save changes" class="btn btn-primary rounded-0 w-100">
     </fieldset>
 </form>
 

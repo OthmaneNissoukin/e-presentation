@@ -11,6 +11,12 @@
     require "app/controller/team_controller.php";
     require "app/controller/files_controller.php";
     require "app/controller/evaluation_controller.php";
+    require "app/controller/notification_controller.php";
+
+    require 'app/vendor/autoload.php';
+
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/');
+    $dotenv->load();
 
     if (isset($_GET["action"])) {
 
@@ -110,6 +116,10 @@
             case "authenticate_team":
                 TeamController::authenticate_team();
                 break;
+
+            case "confirm_email":
+                TeamController::activate_email();
+                break;
             
             case "upload_application":
                 FilesController::upload_application();
@@ -142,6 +152,10 @@
 
             case "check_evaluation":
                 EvaluationController::check_evaluation();
+                break;
+
+            case "send_email":
+                NotificationController::send_email();
                 break;
 
             case "error_forbidden":

@@ -7,6 +7,7 @@ export function ajax_operation(
     presentation_time_value
 ) {
     let alert_box = document.getElementById("alert_box");
+    const team_code = document.getElementById("team_code").value;
     let xhr = new XMLHttpRequest();
 
     xhr.open("POST", "index.php?action=save_team_updates");
@@ -18,6 +19,12 @@ export function ajax_operation(
             if (server_response.status == "error") {
                 location.replace("index.php?action=forbidden");
             } else if (server_response == "invalid") {
+                alert_box.innerText = server_response;
+                alert_box.classList.remove("d-none");
+            } else if (server_response == "no_address") {
+                alert_box.innerText = server_response;
+                alert_box.classList.remove("d-none");
+            } else if (server_response == "err_msg") {
                 alert_box.innerText = server_response;
                 alert_box.classList.remove("d-none");
             } else if (server_response.status == "success") {

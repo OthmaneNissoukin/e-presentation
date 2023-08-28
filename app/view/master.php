@@ -20,8 +20,8 @@
         }
         if (isset($_SESSION["admin"])) {
             require "app/view/mentor/includes/nav_bar.html";
-        } elseif (isset($_SESSION["team_code"])) {
-            require "app/view/teams/includes/nav_bar.html";
+        } elseif (isset($_SESSION["team_code"]) && isset($_SESSION["user"])) {
+            if (TeamController::is_active_trainee($_SESSION["user"])) require "app/view/teams/includes/nav_bar.html";
         }
     ?>
     

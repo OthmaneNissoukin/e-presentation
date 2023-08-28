@@ -77,5 +77,35 @@
             return $query->fetch(PDO::FETCH_ASSOC);
         }
 
+        static function get_activating_info($trainee_id) {
+            $connection = PresentationModel::connection();
+
+            $query = $connection->prepare("SELECT * FROM accounts_to_activate WHERE trainee_id = :trainee_id");
+
+            $query->execute([":trainee_id" => $trainee_id]);
+
+            return $query->fetch(PDO::FETCH_ASSOC);
+        }
+
+        static function activate_trainee($trainee_id, $email) {
+            $connection = PresentationModel::connection();
+
+            $query = $connection->prepare("
+                UPDATE trainee SET email = :email, status = 'active' WHERE trainee_id = :trainee_id
+            ");
+
+            $query->execute([
+                ":trainee_id" => $trainee_id,
+                ":email" => $email,
+                ]);
+        }
+
+        static function delete_trainee_token($trainee_id) {
+            $connection = PresentationModel::connection();
+
+            $delete_query = $connection->prepare("DELETE FROM accounts_to_activate WHERE trainee_id = :trainee_id");
+            $delete_query->execute([":trainee_id" => $trainee_id]);
+        }
+
 
     }

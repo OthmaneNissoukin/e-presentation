@@ -29,10 +29,16 @@
             Helpers::redirect_if_not_authenticated("team_code", "team_login");
 
             $team_code = $_SESSION["team_code"];
+            $current_user = $_SESSION["user"];
+
+            if(!TeamController::is_active_trainee($current_user)) {
+                header("location: index.php?action=activate_account_layout");
+                exit();
+            }
 
             $team_data = PresentationModel::retrieve_teams_data($team_code);
             $team_members = TraineeModel::get_team_members($team_code);
-            $active_user = TraineeModel::get_trainee($_SESSION["user"])["fullname"];
+            $active_user = TraineeModel::get_trainee($current_user)["fullname"];
 
             $notification_data = NotificationModel::latest_presentation_update($team_code);
 
@@ -101,6 +107,11 @@
             
         static function activate_account_layout() {
             session_start();
+
+            if (TeamController::is_active_trainee($_SESSION["user"])) {
+                header("location: index.php?action=team_homepage");
+                exit;
+            }
 
             Helpers::redirect_if_not_authenticated("team_code", "team_login");
             require "app/view/teams/activate_account.php";
@@ -171,6 +182,12 @@
             Helpers::redirect_if_not_authenticated("team_code", "team_login");
 
             $team_code = $_SESSION["team_code"];
+            $current_user = $_SESSION["user"];
+
+            if(!TeamController::is_active_trainee($current_user)) {
+                header("location: index.php?action=activate_account_layout");
+                exit();
+            }
 
             $team_messages = NotificationModel::retrieve_team_messages($team_code);
 
@@ -192,6 +209,12 @@
             Helpers::redirect_if_not_authenticated("team_code", "team_login");
 
             $team_code = $_SESSION["team_code"];
+            $current_user = $_SESSION["user"];
+
+            if(!TeamController::is_active_trainee($current_user)) {
+                header("location: index.php?action=activate_account_layout");
+                exit();
+            }
 
             $app_info = FileModel::retrieve_path($team_code, "application");
             $report_info = FileModel::retrieve_path($team_code, "report");
@@ -275,24 +298,29 @@
 
             if (!isset($_SESSION)) session_start();
             $trainee_id = $_SESSION["user"];
+
+            if(!TeamController::is_active_trainee($trainee_id)) {
+                header("location: index.php?action=activate_account_layout");
+                exit();
+            }
             $result = EvaluationModel::get_result($trainee_id);
             require "app/view/teams/result.php";
         }
 
         static function error_not_found() {
-            require "view/errors/404.php";
+            require "app/view/errors/404.php";
         }
 
         static function forbidden() {
-            require "view/errors/403.php";
+            require "app/view/errors/403.php";
         }
         
         static function bad_request() {
-            require "view/errors/400.php";
+            require "app/view/errors/400.php";
         }
         
         static function prediction_failed() {
-            require "view/errors/412.php";
+            require "app/view/errors/412.php";
         }
 
     }

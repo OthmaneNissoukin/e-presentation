@@ -214,27 +214,65 @@
                 TraineeModel::update_trainee($team_code, $trainee_2, $old_trainee_3);
             }
 
+            // Detect changes for date and time to notify team members.
+            $team_data = PresentationModel::retrieve_teams_data($team_code);
+
+            $older_date = $team_data["presentation_date"];
+            $older_time = $team_data["presentation_time"];
+
             PresentationModel::save_team_changes($team_code, $group, $presentation_date, $presentation_time);
 
             // Send notification if date or time is setted.
             if ($presentation_date or $presentation_time) {
+                $changes = false;
 
-                // Detect changes for date and time to notify team members.
-                $team_data = PresentationModel::retrieve_teams_data($team_code);
+                if ($presentation_date != $older_date) {
+                    $presentation_date = implode("-", array_reverse(explode("-", $presentation_date)));
+                    $changes =  true;
+                }
 
-                $older_date = $team_data["presentation_date"];
-                $older_time = $team_data["presentation_time"];
+                if ($presentation_time != $older_time) {
+                    if (is_null($presentation_time)) $time = "(Time still unknown)";
+                    else $presentation_time = substr($presentation_time, 0, 5);
+                    $changes =  true;
+                }
 
-                if ($presentation_date != $older_date or $presentation_time != $older_time) {
 
-                    $formated_date = implode("-", array_reverse(explode("-", $presentation_date)));
-    
-                    if (is_null($presentation_time)) $formated_time = "(Time still unknown)";
-                    else $formated_time = substr($presentation_time, 0, 5);
-    
-                    $msg_content = "Your prensentation date has been updated to: $formated_date at $formated_time";
+                if ($changes) {
+                    $msg_content = "Your prensentation date has been updated to: $presentation_date at $presentation_time";
                     $msg_object = "Presentation time update.";
                     NotificationModel::send_custom_message($team_code, $msg_content, $msg_object);
+
+                    // Send push up email notification
+                    $team_members = TraineeModel::get_team_members($team_code);
+                    $target_emails = array_map(fn($member) => $member["email"], $team_members);
+
+                    $_SESSION["targets"] = $target_emails;
+
+                    $_SESSION["email_message"] = "<div><h2>Hi There,</h2>
+                        <p>Your soutenance schedule has been updated to: 
+                        <span style='color:red; font-weight:bold'>$presentation_date</span> at <span style='color:red; font-weight:bold'>$presentation_time</span>. 
+                        Check out your account for more informations.</p>
+                        <a 
+                            href='www.google.com' 
+                            style='color: #fff; background-color: #00acee; border:none; outline:none; 
+                            padding:8px 16px; margin:12px 0px; text-decoration:none'>Visit account
+                        </a>
+                    </div>"; 
+
+                    $_SESSION["email_subject"] = 'Soutenance updates';
+
+                    require "app/mail_index.php";
+
+                    unset($_SESSION["targets"], $_SESSION["email_message"]);
+
+                    if (isset($_POST["ajax"])) {
+                        die(json_encode(["status" => "success", "msg" => "Team data has been updated successfully"]));
+                    }
+
+                    header("location: index.php?action=mentor_homepage");
+                    exit;
+
                 }
 
             }

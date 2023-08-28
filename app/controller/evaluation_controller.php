@@ -136,7 +136,7 @@ class EvaluationController {
         echo json_encode(["status" => "success", "message" => "Evaluation has been submitted successfully!"]);
 
         if (!isset($_POST["ajax"])) {
-            header("location: index.php?action=mentor_hompage");
+            header("location: index.php?action=mentor_homepage");
             exit;
         }
     }

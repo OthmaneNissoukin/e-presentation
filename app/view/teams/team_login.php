@@ -9,6 +9,25 @@
     <fieldset class="border p-3">
         <h4 class="text-center text-secondary mb-3">TEAM LOGIN</h4>
         <!-- TODO: Temporary announce -->
+
+        <?php 
+            if (!isset($_SESSION)) session_start();
+            if (isset($_SESSION["confirm_password"])):
+        ?>
+                <div class="alert alert-info">
+                    <?= $_SESSION["confirm_password"] ?>
+                </div>
+        <?php 
+            elseif (isset($_SESSION["activate_msg"])):
+        ?>
+            <div class="alert alert-info">
+                <?= $_SESSION["activate_msg"] ?>
+            </div>
+        <?php 
+            unset($_SESSION["confirm_password"]);
+            endif;
+        ?>
+
         <div class="alert alert-info">
             <strong>Login: </strong> loggin <br>
             <strong>Password: </strong>loggin

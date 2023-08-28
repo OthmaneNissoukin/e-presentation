@@ -79,7 +79,7 @@
             $connection = self::connection();
 
             $request = $connection->prepare("
-                UPDATE trainee SET trainee_password = :trainee_password, status = 'active'
+                UPDATE trainee SET trainee_password = :trainee_password
                 WHERE trainee_id = :trainee_id");
 
             $request->execute([
@@ -114,6 +114,21 @@
 
             $request->execute();
             return $request->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        static function store_token($trainee_id, $email, $random_token) {
+            $connection = self::connection();
+
+            $delete_query = $connection->prepare("DELETE FROM accounts_to_activate WHERE trainee_id = :trainee_id");
+            $delete_query->execute([":trainee_id" => $trainee_id]);
+
+            $request = $connection->prepare("INSERT INTO accounts_to_activate VALUES(NULL, :trainee_id, :email, :random_token)");
+
+            $request->execute([
+                ":trainee_id" => $trainee_id,
+                ":email" => $email,
+                ":random_token" => $random_token
+            ]);
         }
 
     }
