@@ -108,7 +108,13 @@
         static function activate_account_layout() {
             session_start();
 
-            if (TeamController::is_active_trainee($_SESSION["user"])) {
+            if (!$_SESSION["user"]) {
+                header("location: index.php?action=team_login");
+                exit;
+            }
+            $trainee_id = $_SESSION["user"];
+
+            if (TeamController::is_active_trainee($trainee_id)) {
                 header("location: index.php?action=team_homepage");
                 exit;
             }
@@ -263,7 +269,7 @@
             $team_group = PresentationModel::retrieve_teams_data($team_code);
 
             if (!trim($team_code) or !$team_group) {
-                header("location: index.php?action=error_prediction_failed");
+                header("location: index.php?action=error_unauthorized");
                 exit;
             }
 
@@ -307,6 +313,20 @@
             require "app/view/teams/result.php";
         }
 
+        static function request_reset_layout() {
+            $title = "Request password reset";
+            $styles = ["css/login_page.css"];
+            $content = file_get_contents("app/view/teams/reset_form.html");
+            require "app/view/master.php";
+        }
+        
+        static function reset_pwd_layout() {
+            $title = "Reset password";
+            $styles = ["css/login_page.css"];
+            $content = file_get_contents("app/view/teams/new_password_form.html");
+            require "app/view/master.php";
+        }
+
         static function error_not_found() {
             require "app/view/errors/404.php";
         }
@@ -319,8 +339,8 @@
             require "app/view/errors/400.php";
         }
         
-        static function prediction_failed() {
-            require "app/view/errors/412.php";
+        static function unauthorized() {
+            require "app/view/errors/401.php";
         }
 
     }

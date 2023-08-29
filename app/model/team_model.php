@@ -131,6 +131,53 @@
             ]);
         }
 
+        static function save_pwd_reset_request($trainee_id, $email, $hashed_token) {
+            $connection = self::connection();
+
+            $delete_query = $connection->prepare("DELETE FROM reset_pwd_requests WHERE email = :email");
+            $delete_query->execute([":email" => $email]);
+
+            $request = $connection->prepare("INSERT INTO reset_pwd_requests VALUES(NULL, :trainee_id, :email, :hashed_token)");
+
+            $request->execute([
+                ":trainee_id" => $trainee_id,
+                ":email" => $email,
+                ":hashed_token" => $hashed_token
+            ]);
+        }
+
+        static function get_reseting_info($trainee_id) {
+            $connection = PresentationModel::connection();
+
+            $query = $connection->prepare("SELECT * FROM reset_pwd_requests WHERE trainee_id = :trainee_id");
+
+            $query->execute([":trainee_id" => $trainee_id]);
+
+            return $query->fetch(PDO::FETCH_ASSOC);
+        }
+
+        static function update_trainee_password($trainee_id, $new_password) {
+            $connection = self::connection();
+
+            $request = $connection->prepare("
+                UPDATE trainee SET trainee_password = :new_password
+                WHERE trainee_id = :trainee_id");
+
+            $request->execute(
+                [
+                    ":trainee_id" => $trainee_id,
+                    ":new_password" => $new_password
+                ]);
+        }
+
+        static function delete_reset_token($trainee_id) {
+            $connection = self::connection();
+
+            $delete_query = $connection->prepare("DELETE FROM reset_pwd_requests WHERE trainee_id = :trainee_id");
+            $delete_query->execute([":trainee_id" => $trainee_id]);
+
+        }
+
     }
 
 ?>

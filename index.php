@@ -90,6 +90,17 @@
                 LayoutRendering::evaluation_result();
                 break;
 
+            case "request_reset_layout":
+                LayoutRendering::request_reset_layout();
+                break;
+            
+            case "reset_password":
+                LayoutRendering::reset_pwd_layout();
+                break;
+
+            
+
+
             case "login_admin":
                 MentorController::authenticate_admin();
                 break;
@@ -158,6 +169,18 @@
                 NotificationController::send_email();
                 break;
 
+            case "request_pwd_reset":
+                TeamController::request_pwd_reset();
+                break;
+
+            case "check_token":
+                TeamController::check_reset_token();
+                break;
+
+            case "save_new_password":
+                TeamController::save_new_password();
+                break;
+
             case "error_forbidden":
                 LayoutRendering::forbidden();
                 break;
@@ -166,8 +189,9 @@
                 LayoutRendering::bad_request();
                 break;
             
-            case "error_prediction_failed":
-                LayoutRendering::prediction_failed();
+
+            case "error_unauthorized":
+                LayoutRendering::unauthorized();
                 break;
 
             default:

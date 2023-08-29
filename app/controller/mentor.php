@@ -142,7 +142,6 @@
             $presentation_date = $_POST["presentation_date"];
             $presentation_time = $_POST["presentation_time"];
 
-            // TODO: Bring it from session for more security
             if (!isset($_SESSION)) {
                 session_start();
             }

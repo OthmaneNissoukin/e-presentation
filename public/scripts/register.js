@@ -54,7 +54,6 @@ form.addEventListener("submit", function (e) {
         trainee_2_name = trainee_2.value.trim(),
         trainee_3_name = trainee_3.value.trim(),
         group_code = group.value.trim(),
-        // TODO: Allow Inserting Date And Time
         presentation_date_value = presentation_date.value,
         presentation_time_value = presentation_time.value;
 

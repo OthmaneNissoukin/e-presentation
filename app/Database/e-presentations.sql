@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2023 at 01:47 AM
+-- Generation Time: Aug 29, 2023 at 08:39 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -167,6 +167,19 @@ INSERT INTO `notification` (`id_msg`, `team_code`, `msg_content`, `msg_object`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reset_pwd_requests`
+--
+
+CREATE TABLE `reset_pwd_requests` (
+  `id` int(11) NOT NULL,
+  `trainee_id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `query_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `result`
 --
 
@@ -254,7 +267,7 @@ CREATE TABLE `trainee` (
 
 INSERT INTO `trainee` (`trainee_id`, `team_code`, `fullname`, `trainee_login`, `trainee_password`, `status`, `email`) VALUES
 (1, '5130', 'Othmane Nissoukin', 'loggin', 'loggin', 'active', 'email_sample@domain.xwz'),
-(2, '5130', 'Ahmed Eljabary', '8Ha6RI', 'azerty123', 'inactive', 'email_sample@domain.xwz'),
+(2, '5130', 'Ahmed Eljabary', '8Ha6RI', 'azerty123', 'active', 'email_sample@domain.xwz'),
 (3, '5130', 'Conor Kenway', 'T25vUa', 'azerty123', 'inactive', 'email_sample@domain.xwz'),
 (4, '4148', 'John Doe', 'TSgW3j', 'azerty123', 'inactive', 'email_sample@domain.xwz'),
 (5, '4148', 'Ahmed Eljabary', 'KTcILN', 'azerty123', 'inactive', 'email_sample@domain.xwz'),
@@ -299,6 +312,13 @@ ALTER TABLE `notification`
   ADD KEY `notification_ibfk_1` (`team_code`);
 
 --
+-- Indexes for table `reset_pwd_requests`
+--
+ALTER TABLE `reset_pwd_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `trainee_id` (`trainee_id`);
+
+--
 -- Indexes for table `result`
 --
 ALTER TABLE `result`
@@ -327,7 +347,7 @@ ALTER TABLE `trainee`
 -- AUTO_INCREMENT for table `accounts_to_activate`
 --
 ALTER TABLE `accounts_to_activate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `files`
@@ -340,6 +360,12 @@ ALTER TABLE `files`
 --
 ALTER TABLE `notification`
   MODIFY `id_msg` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- AUTO_INCREMENT for table `reset_pwd_requests`
+--
+ALTER TABLE `reset_pwd_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `result`
@@ -374,6 +400,12 @@ ALTER TABLE `files`
 --
 ALTER TABLE `notification`
   ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`team_code`) REFERENCES `team` (`team_code`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `reset_pwd_requests`
+--
+ALTER TABLE `reset_pwd_requests`
+  ADD CONSTRAINT `reset_pwd_requests_ibfk_1` FOREIGN KEY (`trainee_id`) REFERENCES `trainee` (`trainee_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `result`

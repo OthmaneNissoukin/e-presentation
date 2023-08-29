@@ -58,17 +58,27 @@ form.addEventListener("submit", function (e) {
 
     if (!email_value.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) return;
 
+    alert_box.classList.remove("alert-danger", "d-none");
+    alert_box.classList.add("alert-warning");
+    alert_box.innerText = "Confirmation email is being forwarded to your inbox. Please wait a moment...";
+
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "index.php?action=activate_account");
 
     xhr.onreadystatechange = function () {
         if (this.status == 200 && this.readyState == 4) {
-            server_response = this.response;
-            if (server_response.includes("passed")) {
+            server_response = JSON.parse(this.response);
+            alert_box.classList.remove("alert-warning");
+            alert_box.classList.add("alert-danger", "d-none");
+            if (server_response.status == "success") {
                 window.location.replace("index.php?action=team_login");
                 console.log("passed");
-            } else if (server_response == "forbidden") {
+            } else if (server_response.status == "error") {
+                window.location.replace("index.php?action=error_forbidden");
+            } else if (server_response.status == "unauthenticated") {
                 window.location.replace("index.php?action=team_login");
+            } else if (server_response.status == "invalid") {
+                alert_box.innerText = server_response.msg;
             }
         }
     };

@@ -20,18 +20,23 @@
         <?php 
             elseif (isset($_SESSION["activate_msg"])):
         ?>
-            <div class="alert alert-info">
+            <div class="alert alert-success">
                 <?= $_SESSION["activate_msg"] ?>
             </div>
         <?php 
-            unset($_SESSION["confirm_password"]);
+            if (isset($_SESSION["confirm_password"])) unset($_SESSION["confirm_password"]);
+            if (isset($_SESSION["activate_msg"])) unset($_SESSION["activate_msg"]);
             endif;
         ?>
 
         <div class="alert alert-info">
-            <strong>Login: </strong> loggin <br>
+            <strong>Login (active): </strong> loggin <br>
             <strong>Password: </strong>loggin
+            <hr>
+            <strong>Login (inactive): </strong> 8Ha6RI <br>
+            <strong>Password: </strong>azerty123
         </div>
+
         <aside id="flash_alert" class="alert alert-danger d-none"></aside>
         <input type="hidden" id="user" name="user" value="team">
         <div class="mb-3">
@@ -45,7 +50,9 @@
             <span id="pwd_error_box" class="text-danger fw-light fs-6"></span>
         </div>
 
-        <input type="submit" value="Login" class="btn btn-primary px-5 rounded-0 w-100 mb-2" />
+        <a href="index.php?action=request_reset_layout">Forget password?</a>
+
+        <input type="submit" value="Login" class="btn btn-primary px-5 rounded-0 w-100 my-2" />
         <a href="index.php?action=login_admin_layout" class="btn btn-secondary px-4 rounded-0 w-100">Admin space</a>
     </fieldset>
 </form>

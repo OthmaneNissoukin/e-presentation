@@ -107,5 +107,14 @@
             $delete_query->execute([":trainee_id" => $trainee_id]);
         }
 
+        static function get_trainee_by_email($email) {
+            $connection = PresentationModel::connection();
+
+            $query = $connection->prepare("SELECT * FROM trainee WHERE email = :email AND status='active'");
+
+            $query->execute([":email" => $email]);
+
+            return $query->fetch(PDO::FETCH_ASSOC);
+        }
 
     }
